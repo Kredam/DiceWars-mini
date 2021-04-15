@@ -7,7 +7,28 @@ public class Tiles {
     public int y;
     public Player owner;
     public int dice_num;
+    public int numberOfTiles = 0;
     
+    public Tiles(int x, int y, Player owner, int numberOfTiles){
+        this.x = x;
+        this.y = y;
+        this.owner = owner;
+        dice_num = generateDiceNumber();
+        this.numberOfTiles = numberOfTiles;
+    }
+
+    public Tiles(int x, int y, Player owner){
+        this.x = x;
+        this.y = y;
+        this.owner = owner;
+        dice_num = 0;
+        numberOfTiles++;
+    }
+
+    public static int generateDiceNumber(){
+        return (int) Math.floor(Math.random() * 8-1) + 1; 
+    }
+
     public int getX() {
         return x;
     }
