@@ -26,7 +26,11 @@ public class Tiles {
     }
 
     public static int generateDiceNumber(){
-        return (int) Math.floor(Math.random() * 8-1) + 1; 
+        int numberGenerated = (int) Math.floor(Math.random() * 8-1) + 1; 
+        if(numberGenerated==0){
+            numberGenerated++;
+        }
+        return numberGenerated;
     }
 
     public int getX() {

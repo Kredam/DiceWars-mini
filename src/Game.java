@@ -9,5 +9,6 @@ public class Game {
         Board board = new Board(player);
         board.printBoard();
         sc.close();
+        
     }
 }
