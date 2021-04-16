@@ -20,14 +20,15 @@ public class Board {
     public Board(int players){
         this.players = players;
         player1Tiles = 0;
-        player2Tiles = 0;
-        player3Tiles = 0;
-        player4Tiles = 0;
-        neutral = new Player("neutral");
         p1 = new Player("p1");
+        player2Tiles = 0;
         p2 = new Player("p2");
+        player3Tiles = 0;
         p3 = new Player("p3");
+        player4Tiles = 0;
         p4 = new Player("p4");
+        neutral = new Player("neutral");
+
         if(players == 2){
             numberOfTiles = 10;
             row = 4;
@@ -153,45 +154,6 @@ public class Board {
     public static int generateRandomInt(int upperRange){
         return (int) Math.floor(Math.random() * upperRange-1) + 1; 
     }
-
-    /*public boolean validatePosition(int randomRow, int randomCol){
-        //4 szomszéd
-        if  (randomCol !=0 || randomCol !=col || randomRow != 0 || randomRow != row      || 
-            (randomRow != 0 && randomRow != row) || (randomCol != 0 && randomCol != col) &&
-            board[randomRow+1][randomCol] != 0 && board[randomRow-1][randomCol] != 0     && 
-            board[randomRow][randomCol+1] != 0 && board[randomRow][randomCol-1] != 0     ){
-            return true;
-        }
-        //3 szomszéd
-        else if( randomCol !=0 || randomCol != col || randomRow != 0 || randomRow != row || 
-                 (randomRow != 0 && randomRow != row) || (randomCol != 0 && randomCol != col) &&
-                 (board[randomRow+1][randomCol] != 0 && board[randomRow-1][randomCol] != 0 && board[randomRow][randomCol-1] != 0 ) ||
-                 (board[randomRow+1][randomCol] != 0 && board[randomRow-1][randomCol] != 0 && board[randomRow][randomCol+1] != 0) ||
-                 (board[randomRow+1][randomCol] != 0 && board[randomRow-1][randomCol] != 0 && board[randomRow][randomCol+1] != 0) ||
-                 (board[randomRow+1][randomCol] != 0 && board[randomRow-1][randomCol] != 0 && board[randomRow][randomCol+1] != 0) ){
-            return true;
-        }
-        //2 szomszéd
-        else if( randomCol !=0 || randomCol !=col || randomRow != 0 || randomRow != row || 
-                (randomRow != 0 && randomRow != row) || (randomCol != 0 && randomCol != col) &&
-                (board[randomRow+1][randomCol] != 0 && board[randomRow-1][randomCol] != 0)  ||
-                 (board[randomRow][randomCol+1] != 0 && board[randomRow][randomCol-1] != 0) ||
-                 (board[randomRow+1][randomCol] != 0 && board[randomRow-1][randomCol] != 0) ||
-                 (board[randomRow][randomCol-1] != 0 && board[randomRow][randomCol+1] != 0) ){
-            return true;
-        }
-        //1 szomszéd
-        else if(randomCol !=0 || randomCol !=col || randomRow != 0 || randomRow != row || 
-                (randomRow != 0 && randomRow != row) || (randomCol != 0 && randomCol != col) &&
-                board[randomRow+1][randomCol] != 0 ||
-                board[randomRow][randomCol+1] != 0 ||
-                board[randomRow][randomCol-1] != 0 ||
-                board[randomRow-1][randomCol] != 0 ){
-            return true;
-        } else {
-            return false;
-        }
-    }*/
 
     //prints the board
     public void printBoard() {
