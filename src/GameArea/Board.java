@@ -1,5 +1,7 @@
 package GameArea;
 
+import java.util.*;
+
 import Game.*;
 
 public class Board {
@@ -9,15 +11,20 @@ public class Board {
     public static final String YELLOW = "\u001B[33m";
     public static final String BLUE = "\u001B[34m";
     public static final String BLACK = "\u001B[30m";
+    Random random = new Random();
     public Tiles[][] board;
     public int player1Tiles, player2Tiles, player3Tiles, player4Tiles;
+    public int player1Dices, player2Dices, player3Dices, player4Dices;
     public int players;
     public int numberOfTiles;
     public int randomRow, randomCol;
     public int row,col;
+    public int diceNumber;
+    public int dice_given;
     public Player p1,p2,p3,p4, neutral;
     
     public Board(int players){
+        dice_given = 0;
         this.players = players;
         player1Tiles = 0;
         p1 = new Player("p1");
@@ -28,19 +35,28 @@ public class Board {
         player4Tiles = 0;
         p4 = new Player("p4");
         neutral = new Player("neutral");
-
+        //arrary list használat
         if(players == 2){
             numberOfTiles = 10;
+            player1Dices = (numberOfTiles/players) * 3;
+            player2Dices = (numberOfTiles/players) * 3;
             row = 4;
-            col = 4;
+            col = 3;
         }
         if(players == 3){
             numberOfTiles = 27;
+            player1Dices = (numberOfTiles/players) * 3;
+            player2Dices = (numberOfTiles/players) * 3;
+            player3Dices = (numberOfTiles/players) * 3;
             row = 6;
             col = 6;
         }
         if(players == 4){
             numberOfTiles = 40;
+            player1Dices = (numberOfTiles/players) * 3;
+            player2Dices = (numberOfTiles/players) * 3;
+            player3Dices = (numberOfTiles/players) * 3;
+            player4Dices = (numberOfTiles/players) * 3;
             row = 7;
             col = 7;
         }
@@ -73,8 +89,8 @@ public class Board {
     //randomly places the values if it isnt occupied and 
     public void ini2PlayertTable(){
         while(true){
-                randomRow = generateRandomInt(row);
-                randomCol = generateRandomInt(col);
+                randomRow = generateRandomPosition(row);
+                randomCol = generateRandomPosition(col);
                 if(player1Tiles <5 && board[randomRow][randomCol] == null){
                     board[randomRow][randomCol] = new Tiles(randomRow, randomCol, p1, player1Tiles);
                     player1Tiles++;
@@ -88,12 +104,13 @@ public class Board {
                 }
         }
         fillNullPlaces();
+        generateRandomDiceQuantity2Players();
     }
 
     public void ini3PlayertTable(){
         while(true){
-                randomRow = generateRandomInt(row);
-                randomCol = generateRandomInt(col);
+                randomRow = generateRandomPosition(row);
+                randomCol = generateRandomPosition(col);
                 if(player1Tiles <9 && board[randomRow][randomCol] == null){
                     board[randomRow][randomCol] = new Tiles(randomRow, randomCol, p1, player1Tiles);
                     player1Tiles++;
@@ -111,12 +128,13 @@ public class Board {
                 }
         }
         fillNullPlaces();
+        generateRandomDiceQuantity3Players();
     }
 
     public void ini4PlayertTable(){
         while(true){
-                randomRow = generateRandomInt(row);
-                randomCol = generateRandomInt(col);
+                randomRow = generateRandomPosition(row);
+                randomCol = generateRandomPosition(col);
                 if(player1Tiles <10 && board[randomRow][randomCol] == null){
                     board[randomRow][randomCol] = new Tiles(randomRow, randomCol, p1, player1Tiles);
                     player1Tiles++;
@@ -138,6 +156,7 @@ public class Board {
                 }
         }
         fillNullPlaces();
+        generateRandomDiceQuantity4Players();
     }
 
     public void fillNullPlaces(){
@@ -151,8 +170,131 @@ public class Board {
     }
 
     //generate a random number between 1 and the value that is giben by parameter
-    public static int generateRandomInt(int upperRange){
+    public int generateRandomPosition(int upperRange){
         return (int) Math.floor(Math.random() * upperRange-1) + 1; 
+    }
+    
+    public void generateRandomDiceQuantity2Players(){
+        int range;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if(board[i][j].getOwner() == p1){
+                    if(player1Tiles > 1){
+                        range = random.nextInt(4-2)+2;
+                        board[i][j].setDice_num(range);
+                        player1Dices-=range;
+                    }
+                    if(player1Tiles == 1){
+                        board[i][j].setDice_num(player1Dices);
+                    }
+                    player1Tiles--;
+                }
+                if(board[i][j].getOwner() == p2){
+                    if(player2Tiles > 1){
+                        range = random.nextInt(4-2)+2;
+                        board[i][j].setDice_num(range);
+                        player2Dices-=range;
+                    }
+                    if(player2Tiles == 1){
+                        board[i][j].setDice_num(player2Dices);
+                    }
+                    player2Tiles--;
+                }
+            }
+        }
+    }
+
+    private void generateRandomDiceQuantity3Players() {
+        int range;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if(board[i][j].getOwner() == p1){
+                    if(player1Tiles > 1){
+                        range = random.nextInt(4-2)+2;
+                        board[i][j].setDice_num(range);
+                        player1Dices-=range;
+                    }
+                    if(player1Tiles == 1){
+                        board[i][j].setDice_num(player1Dices);
+                    }
+                    player1Tiles--;
+                }
+                if(board[i][j].getOwner() == p2){
+                    if(player2Tiles > 1){
+                        range = random.nextInt(4-2)+2;
+                        board[i][j].setDice_num(range);
+                        player2Dices-=range;
+                    }
+                    if(player2Tiles == 1){
+                        board[i][j].setDice_num(player2Dices);
+                    }
+                    player2Tiles--;
+                }
+                if(board[i][j].getOwner() == p3){
+                    if(player3Tiles > 1){
+                        range = random.nextInt(4-2)+2;
+                        board[i][j].setDice_num(range);
+                        player3Dices-=range;
+                    }
+                    if(player3Tiles == 1){
+                        board[i][j].setDice_num(player3Dices);
+                    }
+                    player3Tiles--;
+                }
+            }
+        }
+    }
+    
+    private void generateRandomDiceQuantity4Players() {
+        int range;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if(board[i][j].getOwner() == p1){
+                    if(player1Tiles > 1){
+                        range = random.nextInt(4-2)+2;
+                        board[i][j].setDice_num(range);
+                        player1Dices-=range;
+                    }
+                    if(player1Tiles == 1){
+                        board[i][j].setDice_num(player1Dices);
+                    }
+                    player1Tiles--;
+                }
+                if(board[i][j].getOwner() == p2){
+                    if(player2Tiles > 1){
+                        range = random.nextInt(4-2)+2;
+                        board[i][j].setDice_num(range);
+                        player2Dices-=range;
+                    }
+                    if(player2Tiles == 1){
+                        board[i][j].setDice_num(player2Dices);
+                    }
+                    player2Tiles--;
+                }
+                if(board[i][j].getOwner() == p3){
+                    if(player3Tiles > 1){
+                        range = random.nextInt(4-2)+2;
+                        board[i][j].setDice_num(range);
+                        player3Dices-=range;
+                    }
+                    if(player3Tiles == 1){
+                        board[i][j].setDice_num(player3Dices);
+                    }
+                    player3Tiles--;
+                }
+                if(board[i][j].getOwner() == p4){
+                    if(player4Tiles > 1){
+                        range = random.nextInt(4-2)+2;
+                        board[i][j].setDice_num(range);
+                        player4Dices-=range;
+                    }
+                    if(player4Tiles == 1){
+                        board[i][j].setDice_num(player4Dices);
+                    }
+                    player4Tiles--;
+                }
+            }
+        }
     }
 
     //prints the board

@@ -9,12 +9,13 @@ public class GameControl {
     public static final String GREEN = "\u001B[32m";
     public static final String YELLOW = "\u001B[33m";
     public static final String BLUE = "\u001B[34m";
-    Random rand = new Random();
+    public static Random rand = new Random();
     public static int attack_value, defend_value; 
+    public static int random_dice_number;
 
     public static void combat(Tiles attack, Tiles defend){
         rollDice(attack, defend);
-        if(attack.getOwner() != defend.getOwner()){
+        if(attack.getOwner() != defend.getOwner() && validatePosition(attack, defend)){
             if (getAttack_value() > getDefend_value()){
 
             } else if (getAttack_value() == getDefend_value()){
@@ -26,32 +27,39 @@ public class GameControl {
     }
     
     public static void rollDice(Tiles attack, Tiles defend){
-            attack_value=attack.getDice_value() * attack.getDice_num();
-            if (attack.getOwner().name == "p1") {
-                System.out.print(RED + attack_value + RESET + " | ");
+        int attack_dice_number = rand.nextInt(7-1)+1;
+        int defend_dice_number = rand.nextInt(7-1)+1;
+        attack_value = attack.getDice_num() * attack_dice_number;
+        defend_value = defend.getDice_num() * defend_dice_number;
+            switch(attack.getOwner().name){
+                case "p1":
+                    System.out.print(RED + attack_value + RESET + " | ");
+                break;
+                case "p2":
+                    System.out.print(GREEN + attack_value + RESET + " | ");
+                break;
+                case "p3":
+                    System.out.print(BLUE + attack_value + RESET + " | ");
+                break;
+                case "p4":
+                    System.out.print(YELLOW + attack_value + RESET + " | ");
+                break;
             }
-            if(attack.getOwner().name == "p2") {
-                System.out.print(GREEN + attack_value + RESET + " | ");
+            switch(attack.getOwner().name){
+                case "p1":
+                    System.out.print(RED + defend_value + RESET + " | ");
+                break;
+                case "p2":
+                    System.out.print(GREEN + defend_value + RESET + " | ");
+                break;
+                case "p3":
+                    System.out.print(BLUE + defend_value + RESET + " | ");
+                break;
+                case "p4":
+                    System.out.print(YELLOW + defend_value + RESET + " | ");
+                break;
             }
-            if(attack.getOwner().name == "p3") {
-                System.out.print(BLUE + attack_value + RESET + " | ");
-            }
-            if(attack.getOwner().name == "p4") {
-                System.out.print(YELLOW + attack_value + RESET + " | ");
-            }
-            defend_value=defend.getDice_num()*defend.getDice_value();
-            if (defend.getOwner().name == "p1") {
-                System.out.print(RED + attack_value + RESET + " | ");
-            }
-            if(defend.getOwner().name == "p2") {
-                System.out.print(GREEN + defend_value + RESET + " | ");
-            }
-            if(defend.getOwner().name == "p3") {
-                System.out.print(BLUE + defend_value + RESET + " | ");
-            }
-            if(defend.getOwner().name == "p4") {
-                System.out.print(YELLOW + defend_value + RESET + " | ");
-            }
+
     }
     
     public static void changePosition(){
@@ -63,7 +71,7 @@ public class GameControl {
     public static int getDefend_value() {
         return defend_value;
     }
-    public static boolean validatePosition(){
+    public static boolean validatePosition(Tiles attack, Tiles defend){
         return true;
     }
 }
