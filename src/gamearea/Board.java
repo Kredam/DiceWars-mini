@@ -1,8 +1,6 @@
-package GameArea;
+package gamearea;
 import java.util.*;
-
-import Game.*;
-
+import game.*;
 public class Board {
 
     Random random = new Random();
@@ -66,7 +64,7 @@ public class Board {
         return board;
     }
 
-    public int getNumberOfTiles() {
+     public int getNumberOfTiles() {
         return numberOfTiles;
     }
 
@@ -204,7 +202,7 @@ public class Board {
                     }
                     if(player1Dices < 0 && iterate == player1Tiles){
                         System.out.println(ConsoleColor.BLUE + player1Dices + ConsoleColor.RESET);
-                        board[i][j].setDice_num(player1Dices+board[i][j].getDice_num());
+                        board[i][j].setDice_num(dices+board[i][j].getDice_num());
                     }
                     iterate++;
                 }
@@ -245,7 +243,7 @@ public class Board {
                         dices=player3Dices;
                     }
                     if(player3Dices > 0 && iterate < player3Tiles){
-                        range = (int) (Math.random()*dices-1)+1;
+                        range = (int) (Math.random()*dices-3)+3;
                         board[i][j].setDice_num(range+board[i][j].getDice_num());
                         player3Dices-=range;
                     }

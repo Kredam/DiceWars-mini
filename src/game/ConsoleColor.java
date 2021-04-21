@@ -1,4 +1,4 @@
-package Game;
+package game;
 
 public class ConsoleColor {
     public static final String RED = "\033[0;31m";

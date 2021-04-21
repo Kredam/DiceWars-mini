@@ -1,5 +1,5 @@
 import java.util.*;
-import GameArea.*;
+import gamearea.*;
 
 public class Game {
     public static void main(String[] args) throws Exception {

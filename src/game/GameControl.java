@@ -1,7 +1,7 @@
-package Game;
+package game;
 
 import java.util.*;
-import GameArea.*;
+import gamearea.*;
 
 public class GameControl {
     public static final String RED = "\033[0;31m";     // RED
