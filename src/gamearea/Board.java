@@ -2,7 +2,6 @@ package gamearea;
 import java.util.*;
 import game.*;
 public class Board {
-
     Random random = new Random();
     public Tiles[][] board;
     public int player1Tiles, player2Tiles, player3Tiles, player4Tiles;
@@ -18,11 +17,12 @@ public class Board {
     public int range;
     public Player p1,p2,p3,p4, neutral;
     
+
     public Board(int players){
+        this.players = players;
         dice_given = 0;
         dices=8;
         iterate=0;
-        this.players = players;
         player1Tiles = 0;
         p1 = new Player("p1");
         player2Tiles = 0;

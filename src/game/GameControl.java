@@ -3,75 +3,82 @@ package game;
 import java.util.*;
 import gamearea.*;
 
-public class GameControl {
-    public static final String RED = "\033[0;31m";     // RED
-    public static final String RESET = "\033[0m";  // Text Reset
-    public static final String GREEN = "\u001B[32m";
-    public static final String YELLOW = "\u001B[33m";
-    public static final String BLUE = "\u001B[34m";
-    public static Random rand = new Random();
-    public static int attack_value, defend_value; 
-    public static int random_dice_number;
+public class GameControl{
+    Random rand = new Random();
+    Scanner sc = new Scanner(System.in);
+    private Tiles[][] tileBoard;
+    Board board;
+    
+    
+    public GameControl(int players){
+        board = new Board(players);
+        tileBoard = board.getBoard();
 
-    public static void combat(Tiles attack, Tiles defend){
-        rollDice(attack, defend);
-        if(attack.getOwner() != defend.getOwner() && validatePosition(attack, defend)){
-            if (getAttack_value() > getDefend_value()){
-
-            } else if (getAttack_value() == getDefend_value()){
-
-            } else {
-
-            }
+    }
+    public void combat(){
+        board.printBoard();
+        System.out.println("x coordinate?");
+        int x = sc.nextInt();
+        System.out.println("y coordinate?");
+        int y = sc.nextInt();
+        if(tileBoard[x][y].isSelectable() && tileBoard[x][y].getOwner().name == "p1"){
+            //int choice = sc.nextInt();
+            printPossibleMoves(x, y, tileBoard[x][y].getOwner());
+            
+        }else{
+            System.out.println("not valid move, pls choose again");
         }
     }
     
-    public static void rollDice(Tiles attack, Tiles defend){
-        int attack_dice_number = rand.nextInt(7-1)+1;
-        int defend_dice_number = rand.nextInt(7-1)+1;
-        attack_value = attack.getDice_num() * attack_dice_number;
-        defend_value = defend.getDice_num() * defend_dice_number;
-            switch(attack.getOwner().name){
-                case "p1":
-                    System.out.print(RED + attack_value + RESET + " | ");
-                break;
-                case "p2":
-                    System.out.print(GREEN + attack_value + RESET + " | ");
-                break;
-                case "p3":
-                    System.out.print(BLUE + attack_value + RESET + " | ");
-                break;
-                case "p4":
-                    System.out.print(YELLOW + attack_value + RESET + " | ");
-                break;
-            }
-            switch(attack.getOwner().name){
-                case "p1":
-                    System.out.print(RED + defend_value + RESET + " | ");
-                break;
-                case "p2":
-                    System.out.print(GREEN + defend_value + RESET + " | ");
-                break;
-                case "p3":
-                    System.out.print(BLUE + defend_value + RESET + " | ");
-                break;
-                case "p4":
-                    System.out.print(YELLOW + defend_value + RESET + " | ");
-                break;
-            }
+    private void upperNeighbour(int x, int y, Player player) {
+        if( y > 0 && isNull(x, y-1) && tileBoard[x][y-1].getOwner().name != player.name){
+            System.out.println("Upper neighbour: x=" + x + ", y=" + (y-1));
+        }
+    }
+    private void bottomNeighbour(int x, int y, Player player) {
+        if(y<=board.row && isNull(x, y+1) && tileBoard[x][y+1].getOwner().name != player.name){
+            System.out.println("Left neighbour: x=" + x + ", y=" + (y+1));
+        }
+    }
+    private void leftNeighbour(int x, int y, Player player) {
+        if(x>0 && isNull(x-1, y) && tileBoard[x][y+1].getOwner().name != player.name){
+            System.out.println("Bottom neighbour: x=" + (x-1) + ", y=" + y);
+        }
+    }
+    private void rightNeighbour(int x, int y, Player player) {
+        if(x<=board.row && isNull(x+1, y) && tileBoard[x+1][y].getOwner().name != player.name){
+            System.out.println("Right neighbour: x=" + (x+1) + ", y=" + y);
+        }
+    }
 
+    public boolean isNull(int x, int y){
+        if(tileBoard[x][y] == null){
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    public void printPossibleMoves(int x, int y, Player player){
+        upperNeighbour(x, y, player);
+        bottomNeighbour(x, y, player);
+        leftNeighbour(x, y, player);
+        rightNeighbour(x, y, player);
+    }
+
+
+    public int rollDiceAttack(){
+        int attack_dice_number = rand.nextInt(7-1)+1;;
+        return attack_dice_number;
+    }
+    
+    public int rollDiceDefend(){
+        int defend_dice_number = rand.nextInt(7-1)+1;
+        return defend_dice_number;
     }
     
     public static void changePosition(){
+        
+    }
 
-    }
-    public static int getAttack_value() {
-        return attack_value;
-    }
-    public static int getDefend_value() {
-        return defend_value;
-    }
-    public static boolean validatePosition(Tiles attack, Tiles defend){
-        return true;
-    }
 }

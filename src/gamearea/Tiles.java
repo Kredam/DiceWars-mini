@@ -2,11 +2,12 @@ package gamearea;
 
 import game.Player;
 
-public class Tiles {
+public class Tiles{
     public int x;
     public int y;
     public Player owner;
     public int dice_num;
+    public boolean selectable;
     public int numberOfTiles = 0;
     
     public Tiles(int x, int y, Player owner, int numberOfTiles){
@@ -24,6 +25,9 @@ public class Tiles {
         numberOfTiles++;
     }
 
+    public boolean isSelectable(){
+        return selectable;
+    }
     public int getX() {
         return x;
     }
@@ -47,6 +51,11 @@ public class Tiles {
         return dice_num;
     }
     public void setDice_num(int dice_num) {
+        if(dice_num > 1){
+            selectable = true;
+        } else {
+            selectable = false;
+        }
         this.dice_num = dice_num;
     }
 }
