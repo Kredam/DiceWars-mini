@@ -24,9 +24,7 @@ public class GameControl{
         if(tileBoard[x][y].isSelectable() && tileBoard[x][y].getOwner().name == "p1"){
             printPossibleMoves(x, y, tileBoard[x][y].getOwner());
         }else{
-            System.out.println();
-            System.out.println("x= " + x + ", y= " + y + ", owner : " + tileBoard[x][y].getOwner().name +", dice value: " + tileBoard[x][y].getDice_num());
-            System.out.println("not valid move, pls choose again");
+            System.out.println("Not your tile or The tile had been selected, please choose again!");
         }
     }
     
@@ -78,7 +76,6 @@ public class GameControl{
             return false;
         }
     }    
-
     public boolean neutralTile(int x, int y){
         if(tileBoard[x][y].getOwner().name == "neutral"){
             return false;
@@ -86,7 +83,6 @@ public class GameControl{
             return true;
         }
     }
-    
     public void printPossibleMoves(int x, int y, Player player){
         upperNeighbour(x, y, player);
         bottomNeighbour(x, y, player);
@@ -105,7 +101,6 @@ public class GameControl{
         }
         return attackDiceValue;
     }
-    
     public int rollDiceDefend(int dices){
         int numberOfTimes = 0;
         int defendDiceValue = 0;

@@ -8,9 +8,9 @@ public class Game {
         Scanner sc = new Scanner(System.in);
         System.out.println("How many player between 2 and 4?");
         int player = sc.nextInt();
-        int end = sc.nextInt();
         GameControl game = new GameControl(player);
         while(true){
+            int end = sc.nextInt();
             game.combat();
             System.out.println("9 for end");
             if(end == 9){
