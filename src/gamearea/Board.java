@@ -14,6 +14,12 @@ public class Board {
 
     public Board(int players){
         this.players = players;
+        initializeBoard(players);
+        initializePlayers();
+        setUpPlayersOnBoard();
+    }
+
+    private void initializeBoard(int players){
         if(players == 2){
             numberOfTiles = 10;
             row = 4;
@@ -29,8 +35,7 @@ public class Board {
             row = 7;
             col = 7;
         }
-        initializePlayers();
-        createBoard();
+        board = new Tiles[row][col];
     }
 
     private void initializePlayers(){
@@ -59,8 +64,7 @@ public class Board {
     }
 
     //create board based on player input
-    public void createBoard(){
-        board = new Tiles[row][col];
+    public void setUpPlayersOnBoard(){
         if(players == 2) {
             ini2PlayertTable();
         }
@@ -76,10 +80,10 @@ public class Board {
         while(true){
             randomRow = generateRandomPosition(row);
             randomCol = generateRandomPosition(col);
-            if(p1.getPlayerTile() < 5 && board[randomRow][randomCol] == null){
+            if(p1.getPlayerTile() < (numberOfTiles/players) && board[randomRow][randomCol] == null){
                 fillBoardWithPlayersTiles(p1);
             }
-            if(p2.getPlayerTile() <5 && board[randomRow][randomCol] == null){
+            if(p2.getPlayerTile() < (numberOfTiles/players)&& board[randomRow][randomCol] == null){
                 fillBoardWithPlayersTiles(p2);
             }
             if(p1.getPlayerTile()+p2.getPlayerTile() == numberOfTiles){
@@ -94,13 +98,13 @@ public class Board {
         while(true){
             randomRow = generateRandomPosition(row);
             randomCol = generateRandomPosition(col);
-            if(p1.getPlayerTile() <9 && board[randomRow][randomCol] == null){
+            if(p1.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
                 fillBoardWithPlayersTiles(p1);
             }
-            if(p2.getPlayerTile() <9 && board[randomRow][randomCol] == null){
+            if(p2.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
                 fillBoardWithPlayersTiles(p2);
             }
-            if(p3.getPlayerTile() <9 && board[randomRow][randomCol] == null){
+            if(p3.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
                 fillBoardWithPlayersTiles(p3);
             }
             if(p1.getPlayerTile()+p2.getPlayerTile()+p3.getPlayerTile() == numberOfTiles){
@@ -108,23 +112,25 @@ public class Board {
             }
         }
         fillNullPlaces();
-
+        generateDiceForPlayer(p1);
+        generateDiceForPlayer(p2);
+        generateDiceForPlayer(p3);
         
     }
     public void ini4PlayertTable(){
         while(true){
             randomRow = generateRandomPosition(row);
             randomCol = generateRandomPosition(col);
-            if(p1.getPlayerTile() <10 && board[randomRow][randomCol] == null){
+            if(p1.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
                 fillBoardWithPlayersTiles(p1);
             }
-            if(p2.getPlayerTile() <10 && board[randomRow][randomCol] == null){
+            if(p2.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
                 fillBoardWithPlayersTiles(p2);
             }
-            if(p3.getPlayerTile() <10 && board[randomRow][randomCol] == null){
+            if(p3.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
                 fillBoardWithPlayersTiles(p3);
             }
-            if(p4.getPlayerTile() <10 && board[randomRow][randomCol] == null){
+            if(p4.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
                 fillBoardWithPlayersTiles(p4);
             }
             if(p1.getPlayerTile()+p2.getPlayerTile()+p3.getPlayerTile()+p4.getPlayerTile() == numberOfTiles){
@@ -132,7 +138,10 @@ public class Board {
             }
         }
         fillNullPlaces();
-
+        generateDiceForPlayer(p1);
+        generateDiceForPlayer(p2);
+        generateDiceForPlayer(p3);
+        generateDiceForPlayer(p4);
     }
     public void fillBoardWithPlayersTiles(Player player){
         board[randomRow][randomCol] = new Tiles(randomRow, randomCol, player);
@@ -179,8 +188,21 @@ public class Board {
             }
         }
     }
-    public void printBoard() {
+    
+    public static void clearScreen() {  
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
+    }
+
+    public void printBoard(){
+        clearScreen();
+        System.out.print("   |");
+        for (int i = 0; i < col; i++) {
+            System.out.print(ConsoleColor.BLACK + ConsoleColor.CYAN_BACKGROUND+i+". "+ ConsoleColor.RESET +"|");
+        }
+        System.out.println();
         for (int i = 0; i < row; i++) {
+            System.out.print(ConsoleColor.BLACK + ConsoleColor.PURPLE_BACKGROUND+i+". " + ConsoleColor.RESET +"| ");
             for (int j = 0; j < col; j++) {
                 if(board[i][j].getOwner() == neutral){
                     System.out.print(ConsoleColor.BLACK + board[i][j].getDice_num() + ConsoleColor.RESET + " | ");
@@ -198,7 +220,10 @@ public class Board {
                     System.out.print(ConsoleColor.YELLOW + board[i][j].getDice_num() + ConsoleColor.RESET + " | ");
                 }
             }
-            System.out.println("");
+            System.out.println();
         }
+        System.out.println();
+        System.out.println(ConsoleColor.PURPLE_BACKGROUND + " " + ConsoleColor.RESET + " = Rows");
+        System.out.println(ConsoleColor.CYAN_BACKGROUND + " " + ConsoleColor.RESET + " = Columns");
     }
 }

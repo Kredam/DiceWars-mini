@@ -1,7 +1,6 @@
 import java.util.*;
 
 import game.GameControl;
-import gamearea.Board;
 
 public class Game {
     public static void main(String[] args) throws Exception {
@@ -10,14 +9,14 @@ public class Game {
         int player = sc.nextInt();
         GameControl game = new GameControl(player);
         while(true){
-            game.combat();
-            System.out.println("9 for end");
-            int end = sc.nextInt();
-            if(end == 9){
+            System.out.println("Press 1 to quit game");
+            if(sc.nextInt() == 1){
                 break;
             }
+            game.playerCombat();
+            game.enemyCombat();
         }
-        sc.close();
         
+        sc.close();
     }
 }

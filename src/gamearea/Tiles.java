@@ -28,6 +28,7 @@ public class Tiles{
     public boolean isSelectable(){
         return selectable;
     }
+
     public int getX() {
         return x;
     }
