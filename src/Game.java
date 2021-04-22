@@ -10,9 +10,9 @@ public class Game {
         int player = sc.nextInt();
         GameControl game = new GameControl(player);
         while(true){
-            int end = sc.nextInt();
             game.combat();
             System.out.println("9 for end");
+            int end = sc.nextInt();
             if(end == 9){
                 break;
             }

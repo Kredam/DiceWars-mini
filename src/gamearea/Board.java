@@ -17,7 +17,7 @@ public class Board {
         if(players == 2){
             numberOfTiles = 10;
             row = 4;
-            col = 4;
+            col = 3;
         }
         if(players == 3){
             numberOfTiles = 27;
@@ -57,7 +57,7 @@ public class Board {
     public Tiles[][] getBoard() {
         return board;
     }
-    
+
     //create board based on player input
     public void createBoard(){
         board = new Tiles[row][col];
@@ -76,7 +76,7 @@ public class Board {
         while(true){
             randomRow = generateRandomPosition(row);
             randomCol = generateRandomPosition(col);
-            if(p1.getPlayerTile() <5 && board[randomRow][randomCol] == null){
+            if(p1.getPlayerTile() < 5 && board[randomRow][randomCol] == null){
                 fillBoardWithPlayersTiles(p1);
             }
             if(p2.getPlayerTile() <5 && board[randomRow][randomCol] == null){
@@ -90,7 +90,6 @@ public class Board {
         generateDiceForPlayer(p1);
         generateDiceForPlayer(p2);
     }
-
     public void ini3PlayertTable(){
         while(true){
             randomRow = generateRandomPosition(row);
@@ -180,7 +179,6 @@ public class Board {
             }
         }
     }
-
     public void printBoard() {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {

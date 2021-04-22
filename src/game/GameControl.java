@@ -18,34 +18,58 @@ public class GameControl{
     public void combat(){
         board.printBoard();
         System.out.println("which row?");
-        int x = sc.nextInt();
+        int OwnPosX = sc.nextInt();
         System.out.println("which column?");
-        int y = sc.nextInt();
-        if(tileBoard[x][y].isSelectable() && tileBoard[x][y].getOwner().name == "p1"){
-            printPossibleMoves(x, y, tileBoard[x][y].getOwner());
+        int OwnPosY = sc.nextInt();
+        if(tileBoard[OwnPosX][OwnPosY].isSelectable() && tileBoard[OwnPosX][OwnPosY].getOwner().name == "p1"){
+            printPossibleMoves(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner());
         }else{
             System.out.println("Not your tile or The tile had been selected, please choose again!");
         }
     }
     
-    private void upperNeighbour(int x, int y, Player player) {
+    public void decideWinner(int attackX, int attackY, int defendX, int defendY){
+        if(rollDiceAttack(tileBoard[attackX][attackY].getDice_num()) > rollDiceAttack(tileBoard[defendX][defendY].getDice_num())){
+
+        }
+        if(rollDiceAttack(tileBoard[attackX][attackY].getDice_num()) < rollDiceAttack(tileBoard[defendX][defendY].getDice_num())){
+        
+        }
+        if(rollDiceAttack(tileBoard[attackX][attackY].getDice_num()) == rollDiceAttack(tileBoard[defendX][defendY].getDice_num())){
+        
+        }
+    }
+
+    private boolean upperNeighbour(int x, int y, Player player) {
         if( x > 0 && upperNeighbourOwner(x, y, player)){
             System.out.println("Upper neighbour: x=" + x + ", y=" + (y-1));
+            return true;
+        }else{
+            return false;
         }
     }
-    private void bottomNeighbour(int x, int y, Player player) {
+    private boolean bottomNeighbour(int x, int y, Player player) {
         if(x<board.row && bottomNeighbourOwner(x, y, player)){
             System.out.println("Bottom neighbour: x=" + x + ", y=" + (y+1));
+            return true;
+        } else {
+            return false;
         }
     }
-    private void leftNeighbour(int x, int y, Player player) {
+    private boolean leftNeighbour(int x, int y, Player player) {
         if(y>0 && leftNeighbourOwner(x, y, player)){
             System.out.println("Left neighbour: x=" + (x-1) + ", y=" + y);
+            return true;
+        } else {
+            return false;
         }
     }
-    private void rightNeighbour(int x, int y, Player player) {
+    private boolean rightNeighbour(int x, int y, Player player) {
         if(y<board.col && rightNeigbourOwner(x, y, player)){
             System.out.println("Right neighbour: x=" + (x+1) + ", y=" + y);
+            return true;
+        } else {
+            return false;
         }
     }
     private boolean upperNeighbourOwner(int x, int y, Player player){
