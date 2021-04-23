@@ -9,12 +9,13 @@ public class Game {
         int player = sc.nextInt();
         GameControl game = new GameControl(player);
         while(true){
+            game.combat();
+            
             System.out.println("Press 1 to quit game");
             if(sc.nextInt() == 1){
                 break;
             }
-            game.playerCombat();
-            game.enemyCombat();
+            
         }
         
         sc.close();

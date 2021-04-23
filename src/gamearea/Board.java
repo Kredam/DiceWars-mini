@@ -5,9 +5,9 @@ import game.*;
 public class Board {
     Random random = new Random();
     public Tiles[][] board;
-    public int players;
-    public int numberOfTiles;
-    public int randomRow, randomCol;
+    private int players;
+    private int numberOfTiles;
+    private int randomRow, randomCol;
     public int row,col;
     public Player p1,p2,p3,p4, neutral;
     
@@ -57,6 +57,10 @@ public class Board {
             p4 = new Player("p4", numberOfTiles);
             neutral = new Player("neutral");
         }
+    }
+
+    public int getPlayers(){
+        return players;
     }
 
     public Tiles[][] getBoard() {
@@ -172,15 +176,12 @@ public class Board {
                     if(dices>player.getPlayerDices()){
                         dices=player.getPlayerDices();
                     }
-                    if(player.getPlayerDices() >= 0 && iterate < player.getPlayerTile()){
-                        range = (int) (Math.random()*dices-1)+1;
+                    if(iterate < player.getPlayerTile()){
+                        range = (int) (Math.random()*dices-2)+2;
                         board[i][j].setDice_num(range + board[i][j].getDice_num());
                         player.decreasePlayerDices(range);
                     }
                     if(iterate == player.getPlayerTile()){
-                        if(player.getPlayerDices() < 0){
-                            dices = range - Math.abs(player.getPlayerDices());
-                        }
                         board[i][j].setDice_num(dices+board[i][j].getDice_num());
                     }
                     iterate++;

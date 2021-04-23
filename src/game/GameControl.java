@@ -14,51 +14,85 @@ public class GameControl{
         board = new Board(players);
         tileBoard = board.getBoard();
     }
-    public void playerCombat(){
+    public void combat(){
         while(true){
-            combat();
-            System.out.println("Press 9 to end game, Press 2 to continue");
-            int end = sc.nextInt();
-            if(end == 9){
-                break;
-            }
-            if(end == 2){
-                continue;
-            }
-        }
-    }
-
-    public void enemyCombat(){
-        int choice;
-        for (int i = 0; i < board.row ;i++) {
-            board.printBoard();
-            for (int j = 0; j < board.col; j++) {
-                if(NeighboursAround(i, j, tileBoard[i][j].getOwner()) && tileBoard[i][j].getOwner().name != "p1"){
-                    while(true){
-                        choice = (int) (Math.random()*5-1)+1;
-                        if(upperNeighbour(i, j, tileBoard[i][j].getOwner()) && choice == 1){
-                            attack(i, j, i-1, j);
-                            break;
-                        }
-                        if(bottomNeighbour(i, j, tileBoard[i][j].getOwner()) && choice == 2){
-                            attack(i, j, i+1, j);
-                            break;
-                        }
-                        if(leftNeighbour(i, j, tileBoard[i][j].getOwner()) && choice == 3){
-                            attack(i, j, i, j-1);
-                            break;
-                        }
-                        if(rightNeighbour(i, j, tileBoard[i][j].getOwner()) && choice == 4){
-                            attack(i, j, i, j+1);
-                            break;
-                        }
-                    }
+            while(playerHasSelectableTiles(board.p1)){
+                playerCombat();
+                System.out.println("Press 9 to end game, Press 2 to continue");
+                int state = sc.nextInt();
+                if(state == 9){
+                    giveDicesAtTheEndOfYourTurn(board.p1);
+                    break;
+                }
+                if(state == 2){
+                    continue;
                 }
             }
+            while(true){
+                initiateEnemyCombat();
+                break;
+            }
         }
     }
 
-    public void combat(){
+    public void initiateEnemyCombat(){
+        if(board.getPlayers() == 2){
+            enemyCombat(board.p2);
+        }
+        if(board.getPlayers() == 3){
+            enemyCombat(board.p2);
+            enemyCombat(board.p3);
+        }
+        if(board.getPlayers()== 4){
+            enemyCombat(board.p2);
+            enemyCombat(board.p3);
+            enemyCombat(board.p4);
+        }
+            
+    }
+
+    public boolean playerHasSelectableTiles(Player player){
+        return true;
+    }
+
+    //as the name suggest share the amount of dices randomly(k=tilesYouOwn/2)
+    private void giveDicesAtTheEndOfYourTurn(Player player){
+        
+    }
+
+    //separate combat created for player and ai(mainly for readibility and input handling)
+    public void enemyCombat(Player player){
+        int choice;
+        for (int i = 0; i < board.row ;i++) {
+            for (int j = 0; j < board.col; j++) {
+                if(NeighboursAround(i, j, tileBoard[i][j].getOwner()) && 
+                tileBoard[i][j].getOwner().name == player.name &&
+                        tileBoard[i][j].isSelectable()){
+                            while(true){
+                                choice = (int) (Math.random()*5-1)+1;
+                                if(choice == 1 && upperNeighbour(i, j, tileBoard[i][j].getOwner())){
+                                    attack(i, j, i-1, j);
+                                    break;
+                                }
+                                if(choice == 2 && bottomNeighbour(i, j, tileBoard[i][j].getOwner())){
+                                    attack(i, j, i+1, j);
+                                    break;
+                                }
+                                if(choice == 3 && leftNeighbour(i, j, tileBoard[i][j].getOwner())){
+                                    attack(i, j, i, j-1);
+                                    break;
+                                }
+                                if(choice == 4 && rightNeighbour(i, j, tileBoard[i][j].getOwner())){
+                                    attack(i, j, i, j+1);
+                                    break;
+                                }
+                            }
+                        }
+                }
+        }
+        giveDicesAtTheEndOfYourTurn(player);
+    }
+    public void playerCombat(){
         board.printBoard();
         System.out.println("which row?");
         int OwnPosX = sc.nextInt();
@@ -87,7 +121,7 @@ public class GameControl{
         }
     }
 
-    //decides what to do basded on the roll outcome
+    //attack with the correct amount of dices and handles the outcome
     public void attack(int attackX, int attackY, int defendX, int defendY){
         int attackValue = rollDiceAttack(tileBoard[attackX][attackY].getDice_num());
         int defendValue = rollDiceAttack(tileBoard[defendX][defendY].getDice_num());
@@ -127,7 +161,7 @@ public class GameControl{
         if(upperNeighbour(x, y, player) || 
             bottomNeighbour(x, y, player) ||
                 leftNeighbour(x, y, player) ||
-                    rightNeigbourOwner(x, y, player)){
+                    rightNeighbour(x, y, player)){
             return true;
         } else {
             return false;
