@@ -57,8 +57,29 @@ public class GameControl{
 
     //as the name suggest share the amount of dices randomly(k=tilesYouOwn/2)
     private void giveDicesAtTheEndOfYourTurn(Player player){
-        
+        int amountOfDicesToShare=player.getPlayerTile()/2;
+        int iterate = 1;
+        while(true){
+            int dice = 9;
+            int randomRow=board.generateRandomColPosition();
+            int randomCol=board.generateRandomColPosition();
+            int upperRange = dice - tileBoard[randomRow][randomCol].getDice_num();
+            int range = (int) (Math.random()*upperRange-1)+1;
+            if(tileBoard[randomRow][randomCol].getOwner().name==player.name && iterate < player.getPlayerTile()){
+                    tileBoard[randomRow][randomCol].setDice_num(range+tileBoard[randomRow][randomCol].getDice_num());
+                    amountOfDicesToShare-=range;
+                    System.out.println(range);
+                    iterate++;
+            }
+            if(tileBoard[randomRow][randomCol].getOwner().name==player.name && iterate < player.getPlayerTile()){
+                    tileBoard[randomRow][randomCol].setDice_num(amountOfDicesToShare+tileBoard[randomRow][randomCol].getDice_num());
+                    iterate++;
+                    System.out.println(amountOfDicesToShare);
+                    break;
+            }
+        }
     }
+
 
     //separate combat created for player and ai(mainly for readibility and input handling)
     public void enemyCombat(Player player){
@@ -128,6 +149,8 @@ public class GameControl{
         //checks the roll outcome, compares the two rolls
         if(attackValue > defendValue){
             changePositionOnWin(attackX, attackY, defendX, defendY);
+            tileBoard[attackX][attackY].getOwner().increasePlayerTile();
+            tileBoard[defendX][defendY].getOwner().decreasePlayerTile();
         }
         if(attackValue < defendValue || attackValue == defendValue){
             changePositionOnLoss(attackX, attackY, defendX, defendY);

@@ -2,7 +2,7 @@ package game;
 
 
 public class Player {
-    public static int numberOfPlayers = 1;
+    public static int numberOfPlayers = 0;
     public String name;
     private int playerTile;
     private int playerDices;
@@ -31,6 +31,9 @@ public class Player {
     }
     public void increasePlayerTile(){
         playerTile++;
+    }
+    public void decreasePlayerTile(){
+        playerTile--;
     }
     public int getPlayerTile() {
         return playerTile;
