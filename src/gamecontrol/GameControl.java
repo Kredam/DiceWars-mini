@@ -5,10 +5,9 @@ import gamearea.*;
 import players.Players;
 
 public class GameControl{
-    Random rand = new Random();
-    Scanner sc = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in);
     private Tiles[][] tileBoard;
-    Board board;
+    private Board board;
     
     
     public GameControl(int players){
@@ -114,31 +113,41 @@ public class GameControl{
         giveDicesAtTheEndOfYourTurn(player);
     }
     public void playerCombat(){
-        board.printBoard();
-        System.out.println("which row?");
-        int OwnPosX = sc.nextInt();
-        System.out.println("which column?");
-        int OwnPosY = sc.nextInt();
-        if(tileBoard[OwnPosX][OwnPosY].isSelectable() && 
-            tileBoard[OwnPosX][OwnPosY].getOwner().name == "p1" &&
-                neighboursAround(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
-                    printPossibleMoves(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner());
-                    int choice = sc.nextInt();
-                    if(choice == 1 && upperNeighbour(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
-                        attack(OwnPosX, OwnPosY, OwnPosX-1, OwnPosY);
-                    }
-                    if(choice == 2 && bottomNeighbour(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
-                        attack(OwnPosX, OwnPosY, OwnPosX+1, OwnPosY);
-                    }
-                    if(choice == 3 && leftNeighbour(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
-                        attack(OwnPosX, OwnPosY, OwnPosX, OwnPosY-1);
-                    }
-                    if(choice == 4 && rightNeigbourOwner(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
-                        attack(OwnPosX, OwnPosY, OwnPosX, OwnPosY+1);
-                    }
-
-        }else{
-            System.out.println("Not your tile or The tile cannot be selected or no nearby neighbours, please choose again!");
+        while(playerHasSelectableTiles(board.p1)){
+            board.printBoard();
+            System.out.println("which row?");
+            int OwnPosX = sc.nextInt();
+            System.out.println("which column?");
+            int OwnPosY = sc.nextInt();
+            if(tileBoard[OwnPosX][OwnPosY].isSelectable() && 
+                tileBoard[OwnPosX][OwnPosY].getOwner().name == "p1" &&
+                    neighboursAround(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
+                        printPossibleMoves(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner());
+                        do{
+                        int choice = sc.nextInt();
+                        if(choice == 1 && upperNeighbour(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
+                            attack(OwnPosX, OwnPosY, OwnPosX-1, OwnPosY);
+                            break;
+                        }
+                        else if(choice == 2 && bottomNeighbour(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
+                            attack(OwnPosX, OwnPosY, OwnPosX+1, OwnPosY);
+                            break;
+                        }
+                        else if(choice == 3 && leftNeighbour(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
+                            attack(OwnPosX, OwnPosY, OwnPosX, OwnPosY-1);
+                            break;
+                        }
+                        else if(choice == 4 && rightNeighbour(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
+                            attack(OwnPosX, OwnPosY, OwnPosX, OwnPosY+1);
+                            break;
+                        }else{
+                            System.out.println("You've choosen a attack option that is invalid for this tile, please choose again!");
+                        }
+                    }while(true);
+    
+            }else{
+                System.out.println("Not your tile or The tile cannot be selected or no nearby neighbours, please choose again!");
+            }
         }
     }
 
@@ -271,4 +280,3 @@ public class GameControl{
         }
     }
 }
-    

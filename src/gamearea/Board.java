@@ -15,9 +15,16 @@ public class Board {
     private int ownabletiles;
     private int row,col;
     public Players p1,p2,p3,p4, neutral;
+    int randomRow,randomCol;
     
     public Board(int players){
         this.players = players;
+        initializeBoard(players);
+        initializeEnemies();
+        setUpPlayersOnBoard();
+    }
+    
+    public Board(){
         initializeBoard(players);
         initializeEnemies();
         setUpPlayersOnBoard();
@@ -125,9 +132,10 @@ public class Board {
     }
     private void ini2PlayertTable(){
         while(true){
-            
-            fillBoardWithPlayersTiles(p1, ownabletiles, randomRow(), randomCol());
-            fillBoardWithPlayersTiles(p2, ownabletiles, randomRow(), randomCol());
+            randomRow = randomRow();
+            randomCol = randomCol();
+            fillBoardWithPlayersTiles(p1, ownabletiles, randomRow, randomCol);
+            fillBoardWithPlayersTiles(p2, ownabletiles, randomRow, randomCol);
             if(p1.getPlayerTile()+p2.getPlayerTile() == numberOfTiles){
                 break;
             }
@@ -153,7 +161,8 @@ public class Board {
     }
     private void ini4PlayertTable(){
         while(true){
-            fillBoardWithPlayersTiles(p1, ownabletiles, randomRow(), randomCol());
+            randomRow = randomRow();
+            fillBoardWithPlayersTiles(p1, ownabletiles, randomRow, randomCol());
             fillBoardWithPlayersTiles(p2, ownabletiles, randomRow(), randomCol());
             fillBoardWithPlayersTiles(p3, ownabletiles, randomRow(), randomCol());
             fillBoardWithPlayersTiles(p4, ownabletiles, randomRow(), randomCol());
