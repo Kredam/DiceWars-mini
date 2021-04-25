@@ -1,23 +1,23 @@
 package gamearea;
 
-import game.Player;
+import game.Players;
 
 public class Tiles{
     public int x;
     public int y;
-    public Player owner;
+    public Players owner;
     public int dice_num;
     public boolean selectable;
     public int numberOfTiles = 0;
     
-    public Tiles(int x, int y, Player owner, int numberOfTiles){
+    public Tiles(int x, int y, Players owner, int numberOfTiles){
         this.x = x;
         this.y = y;
         this.owner = owner;
         this.numberOfTiles = numberOfTiles;
     }
 
-    public Tiles(int x, int y, Player owner){
+    public Tiles(int x, int y, Players owner){
         this.x = x;
         this.y = y;
         this.owner = owner;
@@ -41,11 +41,11 @@ public class Tiles{
     public void setY(int y) {
         this.y = y;
     }
-    public Player getOwner() {
+    public Players getOwner() {
         return owner;
     }
     
-    public void setOwner(Player owner) {
+    public void setOwner(Players owner) {
         this.owner = owner;
     }
     public int getDice_num() {

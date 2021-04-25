@@ -7,14 +7,14 @@ public class Board {
     public Tiles[][] board;
     private int players;
     private int numberOfTiles;
-    private int randomRow, randomCol;
+    private int ownabletiles;
     public int row,col;
-    public Player p1,p2,p3,p4, neutral;
+    public Players p1,p2,p3,p4, neutral;
     
     public Board(int players){
         this.players = players;
         initializeBoard(players);
-        initializePlayers();
+        initializeEnemies();
         setUpPlayersOnBoard();
     }
     public int getRow() {
@@ -30,10 +30,10 @@ public class Board {
         return board;
     }
     
-    public int generateRandomColPosition(){
+    public int randomCol(){
         return (int) Math.floor(Math.random()*this.col-0)+0;
     }
-    public int generateRandomRowPosition(){
+    public int randomRow(){
         return (int) Math.floor(Math.random()*this.row-0)+0;
     }
     public void printBoard(){
@@ -85,26 +85,25 @@ public class Board {
             row = 7;
             col = 7;
         }
+        ownabletiles=numberOfTiles/players;
         board = new Tiles[row][col];
     }
-    private void initializePlayers(){
+    private void initializeEnemies(){
+        p1 = new Player("p1", numberOfTiles);
         if(players == 2){
-            p1 = new Player("p1", numberOfTiles);
-            p2 = new Player("p2", numberOfTiles);
-            neutral = new Player("neutral");
+            p2 = new Enemy("p2", numberOfTiles);
+            neutral = new Neutral("neutral");
         }
         if(players == 3){
-            p1 = new Player("p1", numberOfTiles);
-            p2 = new Player("p2", numberOfTiles);
-            p3 = new Player("p3", numberOfTiles);
-            neutral = new Player("neutral");
+            p2 = new Enemy("p2", numberOfTiles);
+            p3 = new Enemy("p3", numberOfTiles);
+            neutral = new Neutral("neutral");
         }
         if(players == 4){
-            p1 = new Player("p1", numberOfTiles);
-            p2 = new Player("p2", numberOfTiles);
-            p3 = new Player("p3", numberOfTiles);
-            p4 = new Player("p4", numberOfTiles);
-            neutral = new Player("neutral");
+            p2 = new Enemy("p2", numberOfTiles);
+            p3 = new Enemy("p3", numberOfTiles);
+            p4 = new Enemy("p4", numberOfTiles);
+            neutral = new Neutral("neutral");
         }
     }
     //create board based on player input
@@ -121,14 +120,9 @@ public class Board {
     }
     private void ini2PlayertTable(){
         while(true){
-            randomRow = generateRandomRowPosition();
-            randomCol = generateRandomColPosition();
-            if(p1.getPlayerTile() < (numberOfTiles/players) && board[randomRow][randomCol] == null){
-                fillBoardWithPlayersTiles(p1);
-            }
-            if(p2.getPlayerTile() < (numberOfTiles/players)&& board[randomRow][randomCol] == null){
-                fillBoardWithPlayersTiles(p2);
-            }
+            
+            fillBoardWithPlayersTiles(p1, ownabletiles, randomRow(), randomCol());
+            fillBoardWithPlayersTiles(p2, ownabletiles, randomRow(), randomCol());
             if(p1.getPlayerTile()+p2.getPlayerTile() == numberOfTiles){
                 break;
             }
@@ -139,17 +133,9 @@ public class Board {
     }
     private void ini3PlayertTable(){
         while(true){
-            randomRow = generateRandomRowPosition();
-            randomCol = generateRandomColPosition();
-            if(p1.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
-                fillBoardWithPlayersTiles(p1);
-            }
-            if(p2.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
-                fillBoardWithPlayersTiles(p2);
-            }
-            if(p3.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
-                fillBoardWithPlayersTiles(p3);
-            }
+            fillBoardWithPlayersTiles(p1, ownabletiles, randomRow(), randomCol());
+            fillBoardWithPlayersTiles(p2, ownabletiles, randomRow(), randomCol());
+            fillBoardWithPlayersTiles(p3, ownabletiles, randomRow(), randomCol());
             if(p1.getPlayerTile()+p2.getPlayerTile()+p3.getPlayerTile() == numberOfTiles){
                 break;
             }
@@ -162,20 +148,10 @@ public class Board {
     }
     private void ini4PlayertTable(){
         while(true){
-            randomRow = generateRandomRowPosition();
-            randomCol = generateRandomColPosition();
-            if(p1.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
-                fillBoardWithPlayersTiles(p1);
-            }
-            if(p2.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
-                fillBoardWithPlayersTiles(p2);
-            }
-            if(p3.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
-                fillBoardWithPlayersTiles(p3);
-            }
-            if(p4.getPlayerTile() <(numberOfTiles/players) && board[randomRow][randomCol] == null){
-                fillBoardWithPlayersTiles(p4);
-            }
+            fillBoardWithPlayersTiles(p1, ownabletiles, randomRow(), randomCol());
+            fillBoardWithPlayersTiles(p2, ownabletiles, randomRow(), randomCol());
+            fillBoardWithPlayersTiles(p3, ownabletiles, randomRow(), randomCol());
+            fillBoardWithPlayersTiles(p4, ownabletiles, randomRow(), randomCol());
             if(p1.getPlayerTile()+p2.getPlayerTile()+p3.getPlayerTile()+p4.getPlayerTile() == numberOfTiles){
                 break;
             }
@@ -186,10 +162,12 @@ public class Board {
         generateDiceForPlayer(p3);
         generateDiceForPlayer(p4);
     }
-    private void fillBoardWithPlayersTiles(Player player){
-        board[randomRow][randomCol] = new Tiles(randomRow, randomCol, player);
-        board[randomRow][randomCol].setDice_num(1);
-        player.increasePlayerTile();
+    private void fillBoardWithPlayersTiles(Players player, int ownabletiles, int randomRow, int randomCol){
+        if(player.getPlayerTile() < ownabletiles && board[randomRow][randomCol] == null){
+            board[randomRow][randomCol] = new Tiles(randomRow, randomCol, player);
+            board[randomRow][randomCol].setDice_num(1);
+            player.increasePlayerTile();
+        }
     }
     private void fillNullPlaces(){
         for (int i = 0; i < row; i++) {
@@ -200,7 +178,7 @@ public class Board {
             }
         }
     }
-    private void generateDiceForPlayer(Player player){
+    private void generateDiceForPlayer(Players player){
         player.setPlayerDices();
         System.out.println(player.getPlayerDices());
         int range = 0;

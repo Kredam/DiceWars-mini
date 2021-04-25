@@ -51,42 +51,41 @@ public class GameControl{
             
     }
 
-    public boolean playerHasSelectableTiles(Player player){
+    public boolean playerHasSelectableTiles(Players player){
         return true;
     }
 
     //as the name suggest share the amount of dices randomly(k=tilesYouOwn/2)
-    private void giveDicesAtTheEndOfYourTurn(Player player){
+    private void giveDicesAtTheEndOfYourTurn(Players player){
         int amountOfDicesToShare=player.getPlayerTile()/2;
         int iterate = 1;
         while(true){
             int dice = 9;
-            int randomRow=board.generateRandomColPosition();
-            int randomCol=board.generateRandomColPosition();
+            int randomRow=board.randomRow();
+            int randomCol=board.randomCol();
             int upperRange = dice - tileBoard[randomRow][randomCol].getDice_num();
             int range = (int) (Math.random()*upperRange-1)+1;
             if(tileBoard[randomRow][randomCol].getOwner().name==player.name && iterate < player.getPlayerTile()){
                     tileBoard[randomRow][randomCol].setDice_num(range+tileBoard[randomRow][randomCol].getDice_num());
                     amountOfDicesToShare-=range;
-                    System.out.println(range);
                     iterate++;
             }
             if(tileBoard[randomRow][randomCol].getOwner().name==player.name && iterate < player.getPlayerTile()){
                     tileBoard[randomRow][randomCol].setDice_num(amountOfDicesToShare+tileBoard[randomRow][randomCol].getDice_num());
                     iterate++;
-                    System.out.println(amountOfDicesToShare);
                     break;
             }
+            
         }
     }
 
 
     //separate combat created for player and ai(mainly for readibility and input handling)
-    public void enemyCombat(Player player){
+    public void enemyCombat(Players player){
         int choice;
         for (int i = 0; i < board.row ;i++) {
             for (int j = 0; j < board.col; j++) {
-                if(NeighboursAround(i, j, tileBoard[i][j].getOwner()) && 
+                if(neighboursAround(i, j, tileBoard[i][j].getOwner()) && 
                 tileBoard[i][j].getOwner().name == player.name &&
                         tileBoard[i][j].isSelectable()){
                             while(true){
@@ -121,7 +120,7 @@ public class GameControl{
         int OwnPosY = sc.nextInt();
         if(tileBoard[OwnPosX][OwnPosY].isSelectable() && 
             tileBoard[OwnPosX][OwnPosY].getOwner().name == "p1" &&
-                NeighboursAround(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
+                neighboursAround(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
                     printPossibleMoves(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner());
                     int choice = sc.nextInt();
                     if(choice == 1 && upperNeighbour(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
@@ -180,7 +179,7 @@ public class GameControl{
         return DiceValue;
     }
     //checks if there is at least 1 neigbour you can attack
-    private boolean NeighboursAround(int x, int y, Player player){
+    private boolean neighboursAround(int x, int y, Players player){
         if(upperNeighbour(x, y, player) || 
             bottomNeighbour(x, y, player) ||
                 leftNeighbour(x, y, player) ||
@@ -191,28 +190,28 @@ public class GameControl{
         }
     }
     //checks upperneighbour owner and handles to avoid out of bound Exception
-    private boolean upperNeighbour(int x, int y, Player player) {
+    private boolean upperNeighbour(int x, int y, Players player) {
         if( x > 0 && upperNeighbourOwner(x, y, player)){
             return true;
         }else{
             return false;
         }
     }
-    private boolean bottomNeighbour(int x, int y, Player player) {
+    private boolean bottomNeighbour(int x, int y, Players player) {
         if(x<board.row-1 && bottomNeighbourOwner(x, y, player)){
             return true;
         } else {
             return false;
         }
     }
-    private boolean leftNeighbour(int x, int y, Player player) {
+    private boolean leftNeighbour(int x, int y, Players player) {
         if(y>0 && leftNeighbourOwner(x, y, player)){
             return true;
         } else {
             return false;
         }
     }
-    private boolean rightNeighbour(int x, int y, Player player) {
+    private boolean rightNeighbour(int x, int y, Players player) {
         if(y<board.col-1 && rightNeigbourOwner(x, y, player)){
             return true;
         } else {
@@ -220,28 +219,28 @@ public class GameControl{
         }
     }
     //checks if the tile you selected is not your own and not neutral
-    private boolean upperNeighbourOwner(int x, int y, Player player){
+    private boolean upperNeighbourOwner(int x, int y, Players player){
         if(tileBoard[x-1][y].getOwner().name != player.name && notNeutralTile(x-1, y)){
             return true;
         } else {
             return false;
         }
     }
-    private boolean bottomNeighbourOwner(int x, int y, Player player){
+    private boolean bottomNeighbourOwner(int x, int y, Players player){
         if(tileBoard[x+1][y].getOwner().name != player.name && notNeutralTile(x+1, y)){
             return true;
         } else {
             return false;
         }
     }
-    private boolean leftNeighbourOwner(int x, int y, Player player){
+    private boolean leftNeighbourOwner(int x, int y, Players player){
         if(tileBoard[x][y-1].getOwner().name != player.name && notNeutralTile(x, y-1)){
             return true;
         } else {
             return false;
         }
     }
-    private boolean rightNeigbourOwner(int x, int y, Player player){
+    private boolean rightNeigbourOwner(int x, int y, Players player){
         if(tileBoard[x][y+1].getOwner().name != player.name && notNeutralTile(x, y+1)){
             return true;
         } else {
@@ -256,7 +255,7 @@ public class GameControl{
         }
     }
     //print possible neighbours that you can attack
-    public void printPossibleMoves(int x, int y, Player player){
+    public void printPossibleMoves(int x, int y, Players player){
         if(upperNeighbour(x, y, player)){
             System.out.println("Press 1 to attack upper neighbour");
         }
