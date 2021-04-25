@@ -1,14 +1,19 @@
 package gamearea;
 import java.util.*;
-import game.*;
+
+import gamecontrol.*;
+import players.Enemy;
+import players.Neutral;
+import players.Player;
+import players.Players;
 
 public class Board {
     Random random = new Random();
-    public Tiles[][] board;
+    private Tiles[][] board;
     private int players;
     private int numberOfTiles;
     private int ownabletiles;
-    public int row,col;
+    private int row,col;
     public Players p1,p2,p3,p4, neutral;
     
     public Board(int players){

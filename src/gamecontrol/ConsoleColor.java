@@ -1,4 +1,4 @@
-package game;
+package gamecontrol;
 
 public class ConsoleColor {
    // Reset

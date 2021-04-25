@@ -1,6 +1,6 @@
 package gamearea;
 
-import game.Players;
+import players.Players;
 
 public class Tiles{
     public int x;

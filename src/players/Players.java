@@ -1,7 +1,7 @@
-package game;
+package players;
 
 
-public class Players {
+public abstract class Players {
     public static int numberOfPlayers = 0;
     public String name;
     private int playerTile;
@@ -38,5 +38,7 @@ public class Players {
     public int getPlayerTile() {
         return playerTile;
     }
+
+    public abstract void combat();
 
 }

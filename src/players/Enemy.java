@@ -1,4 +1,4 @@
-package game;
+package players;
 
 public class Enemy extends Players{
     public Enemy(String name, int boardNumberOfTiles){

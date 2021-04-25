@@ -1,7 +1,7 @@
 
 import java.util.*;
 import exceptions.*;
-import game.GameControl;
+import gamecontrol.GameControl;
 
 public class Game {
     public static void main(String[] args) throws Exception {

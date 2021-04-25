@@ -1,7 +1,8 @@
-package game;
+package gamecontrol;
 
 import java.util.*;
 import gamearea.*;
+import players.Players;
 
 public class GameControl{
     Random rand = new Random();
@@ -83,8 +84,8 @@ public class GameControl{
     //separate combat created for player and ai(mainly for readibility and input handling)
     public void enemyCombat(Players player){
         int choice;
-        for (int i = 0; i < board.row ;i++) {
-            for (int j = 0; j < board.col; j++) {
+        for (int i = 0; i < board.getRow() ;i++) {
+            for (int j = 0; j < board.getCol(); j++) {
                 if(neighboursAround(i, j, tileBoard[i][j].getOwner()) && 
                 tileBoard[i][j].getOwner().name == player.name &&
                         tileBoard[i][j].isSelectable()){
@@ -198,7 +199,7 @@ public class GameControl{
         }
     }
     private boolean bottomNeighbour(int x, int y, Players player) {
-        if(x<board.row-1 && bottomNeighbourOwner(x, y, player)){
+        if(x<board.getRow()-1 && bottomNeighbourOwner(x, y, player)){
             return true;
         } else {
             return false;
@@ -212,7 +213,7 @@ public class GameControl{
         }
     }
     private boolean rightNeighbour(int x, int y, Players player) {
-        if(y<board.col-1 && rightNeigbourOwner(x, y, player)){
+        if(y<board.getCol()-1 && rightNeigbourOwner(x, y, player)){
             return true;
         } else {
             return false;
