@@ -20,13 +20,11 @@ public class GameControl{
         while(true){
             while(playerHasSelectableTiles(board.p1)){
                 playerCombat();
-                System.out.println("Press 9 to end game, Press 2 to continue");
-                int state = sc.nextInt();
-                if(state == 9){
-                    giveDicesAtTheEndOfYourTurn(board.p1);
+                int endGameChoice = playerInput.endGameOptions();
+                if(endGameChoice==9){
                     break;
                 }
-                if(state == 2){
+                if(endGameChoice==2){
                     continue;
                 }
             }
@@ -116,16 +114,14 @@ public class GameControl{
     }
     public void playerCombat(){
             board.printBoard();
-            System.out.println("which row?");
             int OwnPosX = playerInput.posX(board.getRow());
-            System.out.println("which column?");
             int OwnPosY = playerInput.posY(board.getRow());
             if(tileBoard[OwnPosX][OwnPosY].isSelectable() && 
                 tileBoard[OwnPosX][OwnPosY].getOwner().name == "p1" &&
                     neighboursAround(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
                         do{
+                            printPossibleMoves(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner());
                             try{
-                                printPossibleMoves(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner());
                                 int choice = sc.nextInt();
                                 if(choice == 1 && upperNeighbour(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
                                     attack(OwnPosX, OwnPosY, OwnPosX-1, OwnPosY);
@@ -143,7 +139,7 @@ public class GameControl{
                                     attack(OwnPosX, OwnPosY, OwnPosX, OwnPosY+1);
                                     break;
                                 }else{
-                                    System.out.println("You've choosen an attack option that is invalid for this tile, please choose again!");
+                                    System.out.println(Console.WHITE_BOLD+"You've choosen an attack option that is invalid for this tile, please choose again!"+Console.RESET);
                                 }
                             }catch(InputMismatchException e){
                                 System.out.println("Please enter a number!");
