@@ -49,36 +49,36 @@ public class Board {
         return (int) Math.floor(Math.random()*this.row-0)+0;
     }
     public void printBoard(){
-        clearScreen();
+        Console.clearScreen();
         System.out.print("   |");
         for (int i = 0; i < col; i++) {
-            System.out.print(ConsoleColor.BLACK + ConsoleColor.CYAN_BACKGROUND+i+". "+ ConsoleColor.RESET +"|");
+            System.out.print(Console.BLACK + Console.CYAN_BACKGROUND+i+". "+ Console.RESET +"|");
         }
         System.out.println();
         for (int i = 0; i < row; i++) {
-            System.out.print(ConsoleColor.BLACK + ConsoleColor.PURPLE_BACKGROUND+i+". " + ConsoleColor.RESET +"| ");
+            System.out.print(Console.BLACK + Console.PURPLE_BACKGROUND+i+". " + Console.RESET +"| ");
             for (int j = 0; j < col; j++) {
                 if(board[i][j].getOwner() == neutral){
-                    System.out.print(ConsoleColor.BLACK + board[i][j].getDice_num() + ConsoleColor.RESET + " | ");
+                    System.out.print(Console.BLACK + board[i][j].getDice_num() + Console.RESET + " | ");
                 }
                 if(board[i][j].getOwner() == p1){
-                    System.out.print(ConsoleColor.RED + board[i][j].getDice_num() + ConsoleColor.RESET + " | ");
+                    System.out.print(Console.RED + board[i][j].getDice_num() + Console.RESET + " | ");
                 } 
                 if(board[i][j].getOwner() == p2) {
-                    System.out.print(ConsoleColor.GREEN + board[i][j].getDice_num() + ConsoleColor.RESET + " | ");
+                    System.out.print(Console.GREEN + board[i][j].getDice_num() + Console.RESET + " | ");
                 }
                 if(board[i][j].getOwner() == p3) {
-                    System.out.print(ConsoleColor.BLUE + board[i][j].getDice_num() + ConsoleColor.RESET + " | ");
+                    System.out.print(Console.BLUE + board[i][j].getDice_num() + Console.RESET + " | ");
                 }
                 if(board[i][j].getOwner() == p4) {
-                    System.out.print(ConsoleColor.YELLOW + board[i][j].getDice_num() + ConsoleColor.RESET + " | ");
+                    System.out.print(Console.YELLOW + board[i][j].getDice_num() + Console.RESET + " | ");
                 }
             }
             System.out.println();
         }
         System.out.println();
-        System.out.println(ConsoleColor.PURPLE_BACKGROUND + " " + ConsoleColor.RESET + " = Rows");
-        System.out.println(ConsoleColor.CYAN_BACKGROUND + " " + ConsoleColor.RESET + " = Columns");
+        System.out.println(Console.PURPLE_BACKGROUND + " " + Console.RESET + " = Rows");
+        System.out.println(Console.CYAN_BACKGROUND + " " + Console.RESET + " = Columns");
     }
 
     private void initializeBoard(int players){
@@ -216,10 +216,6 @@ public class Board {
                 }
             }
         }
-    }
-    private static void clearScreen() {  
-        System.out.print("\033[H\033[2J");  
-        System.out.flush();  
     }
 
 }
