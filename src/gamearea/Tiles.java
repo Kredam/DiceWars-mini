@@ -30,14 +30,6 @@ public class Tiles{
     public boolean isSelectable(){
         return selectable;
     }
-    public void setSelectable(int diceNumber){
-        if(diceNumber > 1){
-            selectable = true;
-            NumberOfSelectableTiles++;
-        } else {
-            selectable = false;
-        }
-    }
 
     public int getX() {
         return x;
@@ -70,7 +62,12 @@ public class Tiles{
      * @param diceNumber
      */
     public void setDiceNumber(int diceNumber) {
-        setSelectable(diceNumber);
+        if(diceNumber > 1){
+            selectable = true;
+            NumberOfSelectableTiles++;
+        } else {
+            selectable = false;
+        }
         this.diceNumber = diceNumber;
     }
 }

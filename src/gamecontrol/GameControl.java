@@ -18,54 +18,56 @@ public class GameControl{
     }
 
     //fix from here
-    public void combat(){
+    public void start(){
+        int endGameChoice, endTurnChoice;
         while(true){
-            while(playerHasSelectableTiles(board.p1)){
-                playerTurn();
-                int endGameChoice = playerInput.endGameOptions();
-                if(endGameChoice==9){
+            board.printBoard();
+            while(playerHasTiles()){
+                endTurnChoice=playerInput.endTurnOptions();
+                if(endTurnChoice == 2){
+                    giveDicesAtTheEndOfYourTurn(board.p1);
                     break;
                 }
-                if(endGameChoice==2){
+                playerTurn();
+                if(endTurnChoice == 1){
                     continue;
                 }
             }
             while(true){
-                initiateenemyTurn();
+                initiateEnemyTurn();
                 break;
             }
+            endGameChoice=playerInput.endGameOptions();
+            if(endGameChoice == 2){
+                break;
+            }
+            if(endGameChoice == 1){
+                continue;
+            }
+            Console.clearScreen();
         }
     }
 
-    public void initiateenemyTurn(){
-        while(true){
+    //for testing
+    public void initiateEnemyTurn(){
             if(board.getPlayers() == 2){
                 enemyTurn(board.p2);
-                break;
             }
             if(board.getPlayers() == 3){
                 enemyTurn(board.p2);
                 enemyTurn(board.p3);
-                break;
             }
             if(board.getPlayers()== 4){
                 enemyTurn(board.p2);
                 enemyTurn(board.p3);
                 enemyTurn(board.p4);
-                break;
             }
-        }
     }
     //to here
 
-    public boolean playerHasSelectableTiles(Players player){
-       return true;
-    }
-
-
-
     //separate combat created for player and ai(mainly for readibility and input handling)
     public void enemyTurn(Players player){
+        board.printBoard();
         int choice;
         for (int i = 0; i < board.getRow() ;i++) {
             for (int j = 0; j < board.getCol(); j++) {
@@ -93,9 +95,13 @@ public class GameControl{
                             }
                         }
                 }
-        }
-        giveDicesAtTheEndOfYourTurn(player);
+            }
+            giveDicesAtTheEndOfYourTurn(player);
     }
+
+    /**
+     * this method is responsible for the players turn
+     */
     public void playerTurn(){
             board.printBoard();
             int OwnPosX = playerInput.posX(board.getRow());
@@ -122,6 +128,8 @@ public class GameControl{
                                 else if(choice == 4 && rightNeighbour(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
                                     attack(OwnPosX, OwnPosY, OwnPosX, OwnPosY+1);
                                     break;
+                                }else if(choice == 5){
+                                    break;
                                 }else{
                                     System.out.println(Console.WHITE_BOLD+"You've choosen an attack option that is invalid for this tile, please choose again!"+Console.RESET);
                                 }
@@ -144,7 +152,7 @@ public class GameControl{
         int amountOfDicesToShare=player.getPlayerTile()/2;
         int iterate = 1;
         while(true){
-            int dice = 9;
+            int dice = 8;
             int randomRow=board.randomRow();
             int randomCol=board.randomCol();
             int upperRange = dice - tileBoard[randomRow][randomCol].getDiceNumber();
@@ -164,6 +172,20 @@ public class GameControl{
     }
 
     /**
+     * This method checks player tiles<br/>
+     * if you are out of tiles it ends the game
+     * @param player user player
+     * @return true if you have tiles, false you are out of tiles
+     */
+    public boolean playerHasTiles(){
+        if(board.p1.getPlayerTile() != 0){
+            return true;
+        }else{
+            System.out.println("You have been defeated");
+            return false;
+        }
+    }
+    /**
      * Attacker attack with the tile on attacking position, defender defens with tile on the defend poisiton, and<br/>
      * handles the outcome of the attack
      * @param attackX which row to attack from
@@ -176,8 +198,6 @@ public class GameControl{
         int defendValue = rollDiceAttack(tileBoard[defendX][defendY].getDiceNumber());
         if(attackValue > defendValue){
             changePositionOnWin(attackX, attackY, defendX, defendY);
-            tileBoard[attackX][attackY].getOwner().increasePlayerTile();
-            tileBoard[defendX][defendY].getOwner().decreasePlayerTile();
         }
         if(attackValue < defendValue || attackValue == defendValue){
             changePositionOnLoss(attackX, attackY);
@@ -194,6 +214,8 @@ public class GameControl{
      * @param defendY defending col position
      */
     public void changePositionOnWin(int attackX, int attackY, int defendX, int defendY){
+        tileBoard[attackX][attackY].getOwner().increasePlayerTile();
+        tileBoard[defendX][defendY].getOwner().decreasePlayerTile();
         tileBoard[defendX][defendY].setOwner(tileBoard[attackX][attackY].getOwner());
         tileBoard[defendX][defendY].setDiceNumber(tileBoard[attackX][attackY].getDiceNumber()-1);
         tileBoard[attackX][attackY].setDiceNumber(1);
@@ -385,5 +407,6 @@ public class GameControl{
         if(rightNeighbour(x, y, player)){
             System.out.println("Press 4 to attack right neighbour");
         }
+        System.out.println("Press 5 to abort attack");
     }
 }

@@ -77,10 +77,27 @@ public class playerInput{
     public static int endGameOptions(){
         int endturnoptions;
         do{
-            System.out.println("Press 9 to end game or Press 2 to continue!");
+            System.out.println(Console.RED_BOLD+"Press 2 to quit game"+ Console.GREEN_BOLD +"    Press 1 to continue playing"+Console.RESET);
             try{
                 endturnoptions = sc.nextInt();
-                if(endturnoptions == 2 || endturnoptions == 9){
+                if(endturnoptions == 2 || endturnoptions == 1){
+                    return endturnoptions;
+                }else{
+                    System.out.println(Console.WHITE_BOLD+"Not and option!"+Console.RESET);
+                }
+            }catch(InputMismatchException e){
+                System.out.println("Please enter a number!");
+                sc.nextLine();
+            }
+        }while(true);
+    }
+    public static int endTurnOptions(){
+        int endturnoptions;
+        do{
+            System.out.println(Console.RED_BOLD+"Press 2 to end turn"+ Console.GREEN_BOLD+ "     Press 1 to next turn!"+Console.RESET);
+            try{
+                endturnoptions = sc.nextInt();
+                if(endturnoptions == 2 || endturnoptions == 1){
                     return endturnoptions;
                 }else{
                     System.out.println(Console.WHITE_BOLD+"Not and option!"+Console.RESET);

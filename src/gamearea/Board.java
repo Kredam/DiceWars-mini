@@ -86,6 +86,7 @@ public class Board {
         System.out.println();
         System.out.println(Console.PURPLE_BACKGROUND + " " + Console.RESET + " = Rows");
         System.out.println(Console.CYAN_BACKGROUND + " " + Console.RESET + " = Columns");
+        System.out.println(p1.getPlayerTile());
     }
 
     /**
@@ -134,7 +135,7 @@ public class Board {
         }
     }
     /**
-     * Set up the board with players based on the user input, which is the player number
+     * Set up the board with players based on the user input, which is the number of players
      */
     private void setUpPlayersOnBoard(){
         if(players == 2) {
@@ -231,10 +232,9 @@ public class Board {
      */
     private void generateDiceForPlayer(Players player){
         player.setPlayerDices();
-        System.out.println(player.getPlayerDices());
-        int range = 0;
+        int range;
         int dices = 8;
-        int iterate = 0;
+        int iterate = 1;
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if(board[i][j].getOwner().name == player.name){
