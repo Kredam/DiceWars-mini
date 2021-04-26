@@ -6,7 +6,5 @@ public class Neutral extends Players{
         super(name);
     }
 
-    public void combat(){
-
-    }
+    
 }

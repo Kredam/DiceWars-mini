@@ -16,10 +16,12 @@ public class GameControl{
         board = new Board(players);
         tileBoard = board.getBoard();
     }
+
+    //fix from here
     public void combat(){
         while(true){
             while(playerHasSelectableTiles(board.p1)){
-                playerCombat();
+                playerTurn();
                 int endGameChoice = playerInput.endGameOptions();
                 if(endGameChoice==9){
                     break;
@@ -29,59 +31,41 @@ public class GameControl{
                 }
             }
             while(true){
-                initiateEnemyCombat();
+                initiateenemyTurn();
                 break;
             }
         }
     }
 
-    public void initiateEnemyCombat(){
-        if(board.getPlayers() == 2){
-            enemyCombat(board.p2);
+    public void initiateenemyTurn(){
+        while(true){
+            if(board.getPlayers() == 2){
+                enemyTurn(board.p2);
+                break;
+            }
+            if(board.getPlayers() == 3){
+                enemyTurn(board.p2);
+                enemyTurn(board.p3);
+                break;
+            }
+            if(board.getPlayers()== 4){
+                enemyTurn(board.p2);
+                enemyTurn(board.p3);
+                enemyTurn(board.p4);
+                break;
+            }
         }
-        if(board.getPlayers() == 3){
-            enemyCombat(board.p2);
-            enemyCombat(board.p3);
-        }
-        if(board.getPlayers()== 4){
-            enemyCombat(board.p2);
-            enemyCombat(board.p3);
-            enemyCombat(board.p4);
-        }
-            
     }
+    //to here
 
     public boolean playerHasSelectableTiles(Players player){
-        return true;
+       return true;
     }
 
-    //as the name suggest share the amount of dices randomly(k=tilesYouOwn/2)
-    private void giveDicesAtTheEndOfYourTurn(Players player){
-        int amountOfDicesToShare=player.getPlayerTile()/2;
-        int iterate = 1;
-        while(true){
-            int dice = 9;
-            int randomRow=board.randomRow();
-            int randomCol=board.randomCol();
-            int upperRange = dice - tileBoard[randomRow][randomCol].getDice_num();
-            int range = (int) (Math.random()*upperRange-1)+1;
-            if(tileBoard[randomRow][randomCol].getOwner().name==player.name && iterate < player.getPlayerTile()){
-                    tileBoard[randomRow][randomCol].setDice_num(range+tileBoard[randomRow][randomCol].getDice_num());
-                    amountOfDicesToShare-=range;
-                    iterate++;
-            }
-            if(tileBoard[randomRow][randomCol].getOwner().name==player.name && iterate < player.getPlayerTile()){
-                    tileBoard[randomRow][randomCol].setDice_num(amountOfDicesToShare+tileBoard[randomRow][randomCol].getDice_num());
-                    iterate++;
-                    break;
-            }
-            
-        }
-    }
 
 
     //separate combat created for player and ai(mainly for readibility and input handling)
-    public void enemyCombat(Players player){
+    public void enemyTurn(Players player){
         int choice;
         for (int i = 0; i < board.getRow() ;i++) {
             for (int j = 0; j < board.getCol(); j++) {
@@ -112,7 +96,7 @@ public class GameControl{
         }
         giveDicesAtTheEndOfYourTurn(player);
     }
-    public void playerCombat(){
+    public void playerTurn(){
             board.printBoard();
             int OwnPosX = playerInput.posX(board.getRow());
             int OwnPosY = playerInput.posY(board.getRow());
@@ -152,32 +136,81 @@ public class GameControl{
             }
     }
 
-    //attack with the correct amount of dices and handles the outcome
+    /**
+     * Shares the dice based on the formula which is =  palyerCurrentTiles/2
+     * @param player which player dice to share at the end of the turn
+     */
+    private void giveDicesAtTheEndOfYourTurn(Players player){
+        int amountOfDicesToShare=player.getPlayerTile()/2;
+        int iterate = 1;
+        while(true){
+            int dice = 9;
+            int randomRow=board.randomRow();
+            int randomCol=board.randomCol();
+            int upperRange = dice - tileBoard[randomRow][randomCol].getDiceNumber();
+            int range = (int) (Math.random()*upperRange-1)+1;
+            if(tileBoard[randomRow][randomCol].getOwner().name==player.name && iterate < player.getPlayerTile()){
+                    tileBoard[randomRow][randomCol].setDiceNumber(range+tileBoard[randomRow][randomCol].getDiceNumber());
+                    amountOfDicesToShare-=range;
+                    iterate++;
+            }
+            if(tileBoard[randomRow][randomCol].getOwner().name==player.name && iterate < player.getPlayerTile() && tileBoard[randomRow][randomCol].getDiceNumber()+amountOfDicesToShare <= 8){
+                    tileBoard[randomRow][randomCol].setDiceNumber(amountOfDicesToShare+tileBoard[randomRow][randomCol].getDiceNumber());
+                    iterate++;
+                    break;
+            }
+            
+        }
+    }
+
+    /**
+     * Attacker attack with the tile on attacking position, defender defens with tile on the defend poisiton, and<br/>
+     * handles the outcome of the attack
+     * @param attackX which row to attack from
+     * @param attackY which col to attack rom
+     * @param defendX which row to attack
+     * @param defendY which col to attack
+     */    
     public void attack(int attackX, int attackY, int defendX, int defendY){
-        int attackValue = rollDiceAttack(tileBoard[attackX][attackY].getDice_num());
-        int defendValue = rollDiceAttack(tileBoard[defendX][defendY].getDice_num());
-        //checks the roll outcome, compares the two rolls
+        int attackValue = rollDiceAttack(tileBoard[attackX][attackY].getDiceNumber());
+        int defendValue = rollDiceAttack(tileBoard[defendX][defendY].getDiceNumber());
         if(attackValue > defendValue){
             changePositionOnWin(attackX, attackY, defendX, defendY);
             tileBoard[attackX][attackY].getOwner().increasePlayerTile();
             tileBoard[defendX][defendY].getOwner().decreasePlayerTile();
         }
         if(attackValue < defendValue || attackValue == defendValue){
-            changePositionOnLoss(attackX, attackY, defendX, defendY);
+            changePositionOnLoss(attackX, attackY);
         }
         System.out.println("Attack roll: " + attackValue + ", Defend roll: " + defendValue);
         
     }
-    //change position based on the roll result
+
+    /**
+     * Changes the tiles ownership, dicenumber on win
+     * @param attackX attacking row position
+     * @param attackY attacking col position
+     * @param defendX defending row position
+     * @param defendY defending col position
+     */
     public void changePositionOnWin(int attackX, int attackY, int defendX, int defendY){
         tileBoard[defendX][defendY].setOwner(tileBoard[attackX][attackY].getOwner());
-        tileBoard[defendX][defendY].setDice_num(tileBoard[attackX][attackY].getDice_num()-1);
-        tileBoard[attackX][attackY].setDice_num(1);
+        tileBoard[defendX][defendY].setDiceNumber(tileBoard[attackX][attackY].getDiceNumber()-1);
+        tileBoard[attackX][attackY].setDiceNumber(1);
     }
-    public void changePositionOnLoss(int attackX, int attackY, int defendX, int defendY){
-        tileBoard[attackX][attackY].setDice_num(1);
+    /**
+     * On loss changes the current tile value to 0
+     * @param attackX attacking row position
+     * @param attackY attacking col position
+     */
+    public void changePositionOnLoss(int attackX, int attackY){
+        tileBoard[attackX][attackY].setDiceNumber(1);
     }
-    //roll the dice*dice amount the tile has
+    /**
+     * Roll the dice by the amount the tile has
+     * @param dices the tile's diceNumber
+     * @return all the dice rolls value
+     */
     public int rollDiceAttack(int dices){
         int numberOfTimes = 0;
         int DiceValue = 0;
@@ -189,7 +222,15 @@ public class GameControl{
         }
         return DiceValue;
     }
-    //checks if there is at least 1 neigbour you can attack
+
+
+    /**
+     * Check if there is at least 1 neigbour around the tile
+     * @param x row coordinate
+     * @param y col coordinate
+     * @param player which player to check on the surronding tiles
+     * @return
+     */
     private boolean neighboursAround(int x, int y, Players player){
         if(upperNeighbour(x, y, player) || 
             bottomNeighbour(x, y, player) ||
@@ -200,7 +241,13 @@ public class GameControl{
             return false;
         }
     }
-    //checks upperneighbour owner and handles to avoid out of bound Exception
+    /**
+     * Determines if there is a upper neighbour
+     * @param x row coordinate
+     * @param y col coordinate
+     * @param player which player ownership to check
+     * @return true if there is a upper neighbour, else false
+     */
     private boolean upperNeighbour(int x, int y, Players player) {
         if( x > 0 && upperNeighbourOwner(x, y, player)){
             return true;
@@ -208,13 +255,27 @@ public class GameControl{
             return false;
         }
     }
-    private boolean bottomNeighbour(int x, int y, Players player) {
+    /**
+     * Determines if there is a bottom neighbour
+     * @param x row coordinate
+     * @param y col coordinate
+     * @param player which player ownership to check
+     * @return true if there is a bottom neighbour, else false
+     */
+     private boolean bottomNeighbour(int x, int y, Players player) {
         if(x<board.getRow()-1 && bottomNeighbourOwner(x, y, player)){
             return true;
         } else {
             return false;
         }
     }
+    /**
+     * Determines if there is a left neighbour
+     * @param x row coordinate
+     * @param y col coordinate
+     * @param player which player ownership to check
+     * @return true if there is a left neighbour, else false
+     */
     private boolean leftNeighbour(int x, int y, Players player) {
         if(y>0 && leftNeighbourOwner(x, y, player)){
             return true;
@@ -222,6 +283,13 @@ public class GameControl{
             return false;
         }
     }
+    /**
+     * Determines if there is a right neighbour
+     * @param x row coordinate to check on
+     * @param y col coordinate to check on
+     * @param player which player ownership to check
+     * @return true if there is a right neighbour, else false
+     */
     private boolean rightNeighbour(int x, int y, Players player) {
         if(y<board.getCol()-1 && rightNeigbourOwner(x, y, player)){
             return true;
@@ -229,7 +297,13 @@ public class GameControl{
             return false;
         }
     }
-    //checks if the tile you selected is not your own and not neutral
+    /**
+     * Determine the upper neighbour ownership
+     * @param x row coordinate check on
+     * @param y col coordinate check on
+     * @param player which player to check on the upper tile
+     * @return true if not your tile and not neutral, else false
+     */
     private boolean upperNeighbourOwner(int x, int y, Players player){
         if(tileBoard[x-1][y].getOwner().name != player.name && notNeutralTile(x-1, y)){
             return true;
@@ -237,6 +311,13 @@ public class GameControl{
             return false;
         }
     }
+    /**
+     * Determine the bottom neighbour ownership
+     * @param x row coordinate check on
+     * @param y col coordinate check on
+     * @param player which player to check on the bottom tile
+     * @return true if not your tile and not neutral, else false
+     */
     private boolean bottomNeighbourOwner(int x, int y, Players player){
         if(tileBoard[x+1][y].getOwner().name != player.name && notNeutralTile(x+1, y)){
             return true;
@@ -244,6 +325,13 @@ public class GameControl{
             return false;
         }
     }
+    /**
+     * Determine the bottom neighbour ownership
+     * @param x row coordinate check on
+     * @param y col coordinate check on
+     * @param player which player to check on the left tile
+     * @return true if not your tile and not neutral, else false
+     */
     private boolean leftNeighbourOwner(int x, int y, Players player){
         if(tileBoard[x][y-1].getOwner().name != player.name && notNeutralTile(x, y-1)){
             return true;
@@ -251,6 +339,13 @@ public class GameControl{
             return false;
         }
     }
+    /**
+     * Determine the right neighbour ownership
+     * @param x row coordinate check on
+     * @param y col coordinate check on
+     * @param player which player to check on the right tile
+     * @return true if not your tile and not neutral, else false
+     */
     private boolean rightNeigbourOwner(int x, int y, Players player){
         if(tileBoard[x][y+1].getOwner().name != player.name && notNeutralTile(x, y+1)){
             return true;
@@ -258,6 +353,12 @@ public class GameControl{
             return false;
         }
     }    
+    /**
+     * Determine the neutrality of the tile
+     * @param x row coordinate check on
+     * @param y col coordinate check on
+     * @return true if its not neutral, false if it is neutral
+     */
     public boolean notNeutralTile(int x, int y){
         if(tileBoard[x][y].getOwner().name != "neutral"){
             return true;
@@ -265,7 +366,12 @@ public class GameControl{
             return false;
         }
     }
-    //print possible neighbours that you can attack
+    /**
+     * prints possible moves based on the tiles neighbours
+     * @param x row coordinates check on
+     * @param y col coordinates check on
+     * @param player which player's ownership to check
+     */
     public void printPossibleMoves(int x, int y, Players player){
         if(upperNeighbour(x, y, player)){
             System.out.println("Press 1 to attack upper neighbour");

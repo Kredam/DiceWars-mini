@@ -5,7 +5,5 @@ public class Player extends Players{
         super(name, boardNumberOfTiles);
     }
 
-    public void combat(){
-
-    }
+   
 }

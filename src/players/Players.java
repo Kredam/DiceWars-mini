@@ -39,6 +39,4 @@ public abstract class Players {
         return playerTile;
     }
 
-    public abstract void combat();
-
 }

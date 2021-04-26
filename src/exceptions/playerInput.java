@@ -7,6 +7,10 @@ import gamecontrol.Console;
 public class playerInput{
     static Scanner sc = new Scanner(System.in);
     
+    /**
+     * Ask the player for input as longs as it is not valid, when choosing player number
+     * @return player number, if it's correct
+     */
     public static int checkPlayerInput(){
         int player;
         do{
@@ -24,6 +28,10 @@ public class playerInput{
             }
         }while(true);
     }
+    /**
+     * Ask the player for input as longs as it is not valid, when choosing row
+     * @return row position if it's correct
+     */
     public static int posX(int row){
         int x;
         do{
@@ -41,7 +49,10 @@ public class playerInput{
            }
         }while(true);
     }
-
+    /**
+     * Ask the player for input as longs as it is not valid, when choosing col
+     * @return col position if it's correct
+     */
     public static int posY(int col){
         int y;
         do{
@@ -59,15 +70,18 @@ public class playerInput{
            }
         }while(true);
     }
-
+    /**
+     * Ask the player for input as longs as it is not valid, when choosing end game option
+     * @return end game option if it's correct
+     */
     public static int endGameOptions(){
-        int endTurnOption;
+        int endturnoptions;
         do{
             System.out.println("Press 9 to end game or Press 2 to continue!");
             try{
-                endTurnOption = sc.nextInt();
-                if(endTurnOption == 2 || endTurnOption == 9){
-                    return endTurnOption;
+                endturnoptions = sc.nextInt();
+                if(endturnoptions == 2 || endturnoptions == 9){
+                    return endturnoptions;
                 }else{
                     System.out.println(Console.WHITE_BOLD+"Not and option!"+Console.RESET);
                 }
