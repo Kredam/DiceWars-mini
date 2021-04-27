@@ -7,8 +7,8 @@ public class Strategies {
     private Tiles[][] tileBoard;
     private Board board;
 
-    public Strategies(int players){
-        board = new Board(players);
+    public Strategies(Board board){
+        this.board = board;
         tileBoard = board.getBoard();
     }
     public Board getBoard() {

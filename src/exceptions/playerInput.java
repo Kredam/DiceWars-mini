@@ -108,5 +108,27 @@ public class playerInput{
             }
         }while(true);
     }
+    public static int chooseEnemyBehaviourOptions(){
+        int enemyOption;
+        do{
+            System.out.println("Options:");
+            System.out.println("1. Enemy attack random positions");
+            System.out.println("2. Enemy considers if the tile has bigger number");
+            System.out.println("3. Enemy always attack 1 numbered tiles first");
+            enemyOption=sc.nextInt();
+            try{
+                if(enemyOption==1 || enemyOption == 2 || enemyOption == 3){
+                    return enemyOption;
+                }else{
+                    System.out.println("Choose from the options!");
+                }
+
+            }catch(InputMismatchException e){
+                System.out.println("Please enter number!");
+                sc.next();
+            }
+
+        }while(true);
+    }
 
 }

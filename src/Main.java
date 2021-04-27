@@ -5,7 +5,7 @@ import gameplay.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in); 
         new GameControl(playerInput.checkPlayerInput());
         sc.close();
     }

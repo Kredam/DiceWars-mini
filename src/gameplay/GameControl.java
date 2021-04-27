@@ -16,11 +16,11 @@ public class GameControl{
     private Board board;
 
     public GameControl(int players){
-        strategies = new Strategies(players);
-        board = strategies.getBoard();
-        tileBoard = strategies.getTileBoard();
-        playerStrategy = new MainCombat(players);
-        enemyStrategy = new EnemyStrategies(players);
+        board = new Board(players);
+        tileBoard = board.getBoard();
+        strategies = new Strategies(board);
+        playerStrategy = new MainCombat(board);
+        enemyStrategy = new EnemyStrategies(board);
         start();
     }
     
@@ -33,6 +33,7 @@ public class GameControl{
                 playerStrategy.playerCombat();
                 endTurnChoice=playerInput.endTurnOptions();
                 if(endTurnChoice == 2){
+                    giveDicesAtTheEndOfYourTurn(board.p1);
                     break;
                 }
                 
@@ -40,7 +41,7 @@ public class GameControl{
                     continue;
                 }
             }
-            //initiateEnemyTurn();
+            initiateEnemyTurn();
             endGameChoice=playerInput.endGameOptions();
             if(endGameChoice == 2){
                 break;
@@ -51,18 +52,28 @@ public class GameControl{
         }
     }
 
+    public void chooseEnemyBehaviour(){
+        
+    }
+
     public void initiateEnemyTurn(){
             if(board.getPlayers() == 2){
                 enemyStrategy.randomTileAttack(board.p2);
+                giveDicesAtTheEndOfYourTurn(board.p2);
             }
             if(board.getPlayers() == 3){
                 enemyStrategy.randomTileAttack(board.p2);
+                giveDicesAtTheEndOfYourTurn(board.p2);
                 enemyStrategy.randomTileAttack(board.p3);
+                giveDicesAtTheEndOfYourTurn(board.p3);
             }
             if(board.getPlayers()== 4){
                 enemyStrategy.randomTileAttack(board.p2);
+                giveDicesAtTheEndOfYourTurn(board.p2);
                 enemyStrategy.randomTileAttack(board.p3);
+                giveDicesAtTheEndOfYourTurn(board.p3);
                 enemyStrategy.randomTileAttack(board.p4);
+                giveDicesAtTheEndOfYourTurn(board.p4);
             }
     }
 

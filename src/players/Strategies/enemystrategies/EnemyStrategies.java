@@ -10,10 +10,10 @@ public class EnemyStrategies extends Strategies{
     private Tiles[][] tileBoard;
     private Board board;
 
-    public EnemyStrategies(int players) {
-        super(players);
-        tileBoard=super.getTileBoard();
-        board = super.getBoard();
+    public EnemyStrategies(Board board) {
+        super(board);
+        this.board=getBoard();
+        tileBoard=getTileBoard();
     }
 
     public void randomTileAttack(Players player){

@@ -13,18 +13,19 @@ public class MainCombat extends Strategies{
     private Tiles[][] tileBoard;
     private Board board;
 
-    public MainCombat(int players) {
-        super(players);
-        tileBoard=super.getTileBoard();
-        board = super.getBoard();
+    public MainCombat(Board board) {
+        super(board);
+        this.board = getBoard();
+        tileBoard=getTileBoard();
     }
 
     public void playerCombat(){
+        board.printBoard();
         int OwnPosX = playerInput.posX(board.getRow());
         int OwnPosY = playerInput.posY(board.getRow());
         if(tileBoard[OwnPosX][OwnPosY].isSelectable() && 
             tileBoard[OwnPosX][OwnPosY].getOwner().name.equals("p1") &&
-                neighboursAround(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
+                super.neighboursAround(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
                     do{
                         printPossibleMoves(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner());
                         try{
