@@ -17,6 +17,7 @@ public class Board {
     public Players p1,p2,p3,p4, neutral;
     int randomRow,randomCol;
     
+    
     public Board(int players){
         this.players = players;
         initializeBoard(players);
