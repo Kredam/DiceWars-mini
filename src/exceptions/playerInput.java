@@ -38,14 +38,14 @@ public class playerInput{
             System.out.println("which row?");
            try{
                 x=sc.nextInt();
-                if(x>=0 && x<row){
+                if(x>=0 && x<row-1){
                     return x;
                 }else{
                     System.out.println(Console.WHITE_BOLD+"Please enter x from the intervall!"+Console.RESET);
                 }
            }catch(InputMismatchException e){
             System.out.println(Console.WHITE_BOLD+"Not a number, please try again!"+Console.RESET);
-            sc.nextLine();
+            sc.next();
            }
         }while(true);
     }
@@ -59,14 +59,14 @@ public class playerInput{
             System.out.println("which col?");
            try{
                 y=sc.nextInt();
-                if(y>=0 && y<col){
+                if(y>=0 && y<col-1){
                     return y;
                 }else{
                     System.out.println(Console.WHITE_BOLD+"Please enter y from the intervall!"+Console.RESET);
                 }
            }catch(InputMismatchException e){
             System.out.println(Console.WHITE_BOLD+"Not a number, please try again!"+Console.RESET);
-            sc.nextLine();
+            sc.next();
            }
         }while(true);
     }
@@ -77,7 +77,7 @@ public class playerInput{
     public static int endGameOptions(){
         int endturnoptions;
         do{
-            System.out.println(Console.RED_BOLD+"Press 2 to quit game"+ Console.GREEN_BOLD +"    Press 1 to continue playing"+Console.RESET);
+            System.out.println(Console.GREEN_BOLD+"Press 1 to cotinue game"+ Console.RED_BOLD +"    Press 2 to quit game"+Console.RESET);
             try{
                 endturnoptions = sc.nextInt();
                 if(endturnoptions == 2 || endturnoptions == 1){
@@ -87,14 +87,14 @@ public class playerInput{
                 }
             }catch(InputMismatchException e){
                 System.out.println("Please enter a number!");
-                sc.nextLine();
+                sc.next();
             }
         }while(true);
     }
     public static int endTurnOptions(){
         int endturnoptions;
         do{
-            System.out.println(Console.RED_BOLD+"Press 2 to end turn"+ Console.GREEN_BOLD+ "     Press 1 to next turn!"+Console.RESET);
+            System.out.println(Console.GREEN_BOLD+"Press 1 for next attack"+ Console.RED_BOLD+ "     Press 2 to end turn!"+Console.RESET);
             try{
                 endturnoptions = sc.nextInt();
                 if(endturnoptions == 2 || endturnoptions == 1){
@@ -104,7 +104,7 @@ public class playerInput{
                 }
             }catch(InputMismatchException e){
                 System.out.println("Please enter a number!");
-                sc.nextLine();
+                sc.next();
             }
         }while(true);
     }

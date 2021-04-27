@@ -33,10 +33,7 @@ public class GameControl{
                     continue;
                 }
             }
-            while(true){
-                initiateEnemyTurn();
-                break;
-            }
+            initiateEnemyTurn();
             endGameChoice=playerInput.endGameOptions();
             if(endGameChoice == 2){
                 break;
@@ -48,7 +45,6 @@ public class GameControl{
         }
     }
 
-    //for testing
     public void initiateEnemyTurn(){
             if(board.getPlayers() == 2){
                 enemyTurn(board.p2);
