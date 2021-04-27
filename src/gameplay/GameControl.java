@@ -1,4 +1,4 @@
-package gamecontrol;
+package gameplay;
 
 import java.util.*;
 
@@ -16,59 +16,19 @@ public class GameControl{
         board = new Board(players);
         tileBoard = board.getBoard();
     }
-
-    //fix from here
-    public void start(){
-        int endGameChoice, endTurnChoice;
-        while(true){
-            board.printBoard();
-            while(playerHasTiles()){
-                endTurnChoice=playerInput.endTurnOptions();
-                if(endTurnChoice == 2){
-                    giveDicesAtTheEndOfYourTurn(board.p1);
-                    break;
-                }
-                playerTurn();
-                if(endTurnChoice == 1){
-                    continue;
-                }
-            }
-            initiateEnemyTurn();
-            endGameChoice=playerInput.endGameOptions();
-            if(endGameChoice == 2){
-                break;
-            }
-            if(endGameChoice == 1){
-                continue;
-            }
-            Console.clearScreen();
-        }
+    public Board getBoard() {
+        return board;
+    }
+    public Tiles[][] getTileBoard() {
+        return tileBoard;
     }
 
-    public void initiateEnemyTurn(){
-            if(board.getPlayers() == 2){
-                enemyTurn(board.p2);
-            }
-            if(board.getPlayers() == 3){
-                enemyTurn(board.p2);
-                enemyTurn(board.p3);
-            }
-            if(board.getPlayers()== 4){
-                enemyTurn(board.p2);
-                enemyTurn(board.p3);
-                enemyTurn(board.p4);
-            }
-    }
-    //to here
-
-    //separate combat created for player and ai(mainly for readibility and input handling)
     public void enemyTurn(Players player){
-        board.printBoard();
         int choice;
         for (int i = 0; i < board.getRow() ;i++) {
             for (int j = 0; j < board.getCol(); j++) {
                 if(neighboursAround(i, j, tileBoard[i][j].getOwner()) && 
-                tileBoard[i][j].getOwner().name == player.name &&
+                tileBoard[i][j].getOwner().name.equals(player.name) &&
                         tileBoard[i][j].isSelectable()){
                             while(true){
                                 choice = (int) (Math.random()*5-1)+1;
@@ -103,7 +63,7 @@ public class GameControl{
             int OwnPosX = playerInput.posX(board.getRow());
             int OwnPosY = playerInput.posY(board.getRow());
             if(tileBoard[OwnPosX][OwnPosY].isSelectable() && 
-                tileBoard[OwnPosX][OwnPosY].getOwner().name == "p1" &&
+                tileBoard[OwnPosX][OwnPosY].getOwner().name.equals("p1") &&
                     neighboursAround(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner())){
                         do{
                             printPossibleMoves(OwnPosX, OwnPosY, tileBoard[OwnPosX][OwnPosY].getOwner());
@@ -134,7 +94,7 @@ public class GameControl{
                                 sc.nextLine();
                             }
                     }while(true);
-    
+                    
             }else{
                 System.out.println("Not your tile or The tile cannot be selected or no nearby neighbours, please choose again!");
             }
@@ -144,27 +104,27 @@ public class GameControl{
      * Shares the dice based on the formula which is =  palyerCurrentTiles/2
      * @param player which player dice to share at the end of the turn
      */
-    private void giveDicesAtTheEndOfYourTurn(Players player){
+    public void giveDicesAtTheEndOfYourTurn(Players player){
         int amountOfDicesToShare=player.getPlayerTile()/2;
         int iterate = 1;
-        while(true){
-            int dice = 8;
-            int randomRow=board.randomRow();
-            int randomCol=board.randomCol();
-            int upperRange = dice - tileBoard[randomRow][randomCol].getDiceNumber();
-            int range = (int) (Math.random()*upperRange-1)+1;
-            if(tileBoard[randomRow][randomCol].getOwner().name==player.name && iterate < player.getPlayerTile()){
-                    tileBoard[randomRow][randomCol].setDiceNumber(range+tileBoard[randomRow][randomCol].getDiceNumber());
-                    amountOfDicesToShare-=range;
+        for (int i = 0; i < board.getRow(); i++) {
+            for (int j = 0; j < board.getCol(); j++) {
+                if(tileBoard[i][j].getOwner().name.equals(player.name)){
+                    int range = (int) (Math.random()*amountOfDicesToShare-1)+1;
+                    System.out.println(range);
+                    if(iterate < player.getPlayerTile() && amountOfDicesToShare > 0 && tileBoard[i][j].getDiceNumber()+range <=8){
+                        tileBoard[i][j].setDiceNumber(tileBoard[i][j].getDiceNumber()+range);
+                        amountOfDicesToShare-=range;
+                        System.out.println(amountOfDicesToShare + "= amount dice to share");
+                    }
+                    if(iterate==player.getPlayerTile() && amountOfDicesToShare > 0){
+                        tileBoard[i][j].setDiceNumber(tileBoard[i][j].getDiceNumber()+amountOfDicesToShare);
+                    }
                     iterate++;
+                }
             }
-            if(tileBoard[randomRow][randomCol].getOwner().name==player.name && iterate < player.getPlayerTile() && tileBoard[randomRow][randomCol].getDiceNumber()+amountOfDicesToShare <= 8){
-                    tileBoard[randomRow][randomCol].setDiceNumber(amountOfDicesToShare+tileBoard[randomRow][randomCol].getDiceNumber());
-                    iterate++;
-                    break;
-            }
-            
         }
+        board.printBoard();
     }
 
     /**

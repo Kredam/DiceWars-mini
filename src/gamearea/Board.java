@@ -1,7 +1,7 @@
 package gamearea;
 import java.util.*;
 
-import gamecontrol.*;
+import gameplay.*;
 import players.Enemy;
 import players.Neutral;
 import players.Player;

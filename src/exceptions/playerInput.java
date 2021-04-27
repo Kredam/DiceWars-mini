@@ -2,7 +2,7 @@ package exceptions;
 
 import java.util.*;
 
-import gamecontrol.Console;
+import gameplay.Console;
 
 public class playerInput{
     static Scanner sc = new Scanner(System.in);
@@ -38,7 +38,7 @@ public class playerInput{
             System.out.println("which row?");
            try{
                 x=sc.nextInt();
-                if(x>=0 && x<row-1){
+                if(x>=0 && x<row){
                     return x;
                 }else{
                     System.out.println(Console.WHITE_BOLD+"Please enter x from the intervall!"+Console.RESET);
@@ -59,7 +59,7 @@ public class playerInput{
             System.out.println("which col?");
            try{
                 y=sc.nextInt();
-                if(y>=0 && y<col-1){
+                if(y>=0 && y<col){
                     return y;
                 }else{
                     System.out.println(Console.WHITE_BOLD+"Please enter y from the intervall!"+Console.RESET);

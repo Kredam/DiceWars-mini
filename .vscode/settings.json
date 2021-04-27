@@ -1,6 +1,5 @@
 {
     "java.project.sourcePaths": [
-        "src/GameArea",
         "src"
     ]
 }

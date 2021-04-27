@@ -1,4 +1,4 @@
-package gamecontrol;
+package gameplay;
 
 public class Console {
    // Reset

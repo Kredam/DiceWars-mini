@@ -1,13 +1,12 @@
 
 import java.util.*;
 import exceptions.*;
-import gamecontrol.GameControl;
+import gameplay.*;
 
-public class Game {
+public class Main {
     public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
-        GameControl game = new GameControl(playerInput.checkPlayerInput());
-        game.start();
+        new Game(playerInput.checkPlayerInput());
         sc.close();
     }
 }
