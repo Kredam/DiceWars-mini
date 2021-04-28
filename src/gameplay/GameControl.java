@@ -1,33 +1,46 @@
 package gameplay;
 
+import java.util.Random;
+
 import exceptions.playerInput;
 import gamearea.Board;
 import gamearea.Tiles;
 import players.Players;
-import players.Strategies.Strategies;
 import players.Strategies.enemystrategies.EnemyStrategies;
 import players.Strategies.playerstrategy.MainCombat;
 
 public class GameControl{
-    private Strategies strategies;
+    Random rand = new Random();
     private Tiles[][] tileBoard;
     private MainCombat playerStrategy;
     private EnemyStrategies enemyStrategy;
     private Board board;
+    private int enemyStrategyOption;
 
     public GameControl(int players){
         board = new Board(players);
         tileBoard = board.getBoard();
-        strategies = new Strategies(board);
         playerStrategy = new MainCombat(board);
         enemyStrategy = new EnemyStrategies(board);
+        chooseYourEnemyType(playerInput.chooseEnemyBehaviourOptions());
         start();
     }
     
-    
+    public void chooseYourEnemyType(int enemyStrategyOption){
+        if(enemyStrategyOption == 4){
+            this.enemyStrategyOption = (int) (Math.random()*4-1)+1;
+        }else{
+            this.enemyStrategyOption=enemyStrategyOption;
+        }
+        System.out.println("You've choosen "+this.enemyStrategyOption+" strategy");
+    }
+
     public void start(){
         int endGameChoice, endTurnChoice;
+        Console.clearScreen();
+        System.out.println("Your enemy's strategy is " + enemyStrategyOption);
         while(true){
+            
             board.printBoard();
             while(playerHasTiles()){
                 playerStrategy.playerCombat();
@@ -36,7 +49,6 @@ public class GameControl{
                     giveDicesAtTheEndOfYourTurn(board.p1);
                     break;
                 }
-                
                 if(endTurnChoice == 1){
                     continue;
                 }
@@ -53,29 +65,38 @@ public class GameControl{
     }
 
     public void chooseEnemyBehaviour(){
-        
+
     }
 
     public void initiateEnemyTurn(){
             if(board.getPlayers() == 2){
-                enemyStrategy.randomTileAttack(board.p2);
-                giveDicesAtTheEndOfYourTurn(board.p2);
+                initiateEnemyStrategy(enemyStrategyOption, board.p2);
             }
             if(board.getPlayers() == 3){
-                enemyStrategy.randomTileAttack(board.p2);
-                giveDicesAtTheEndOfYourTurn(board.p2);
-                enemyStrategy.randomTileAttack(board.p3);
-                giveDicesAtTheEndOfYourTurn(board.p3);
+                initiateEnemyStrategy(enemyStrategyOption, board.p2);
+                initiateEnemyStrategy(enemyStrategyOption, board.p3);
             }
             if(board.getPlayers()== 4){
-                enemyStrategy.randomTileAttack(board.p2);
-                giveDicesAtTheEndOfYourTurn(board.p2);
-                enemyStrategy.randomTileAttack(board.p3);
-                giveDicesAtTheEndOfYourTurn(board.p3);
-                enemyStrategy.randomTileAttack(board.p4);
-                giveDicesAtTheEndOfYourTurn(board.p4);
+                initiateEnemyStrategy(enemyStrategyOption, board.p2);
+                initiateEnemyStrategy(enemyStrategyOption, board.p3);
+                initiateEnemyStrategy(enemyStrategyOption, board.p4);
             }
     }
+    public void initiateEnemyStrategy(int enemyStrategyOption, Players player){
+        if(enemyStrategyOption==1){
+            enemyStrategy.randomTileAttack(player);
+            giveDicesAtTheEndOfYourTurn(player);
+        }
+        if(enemyStrategyOption==2){
+            enemyStrategy.biggerNumberedTileAttack(player);
+            giveDicesAtTheEndOfYourTurn(player);
+        }
+        if(enemyStrategyOption==3){
+            enemyStrategy.oneNumberedTileAttack(player);
+            giveDicesAtTheEndOfYourTurn(player);
+        }
+    }
+    
 
 
     /**
@@ -94,11 +115,9 @@ public class GameControl{
             for (int j = 0; j < board.getCol(); j++) {
                 if(tileBoard[i][j].getOwner().name.equals(player.name)){
                     int range = (int) (Math.random()*amountOfDicesToShare-1)+1;
-                    System.out.println(range);
                     if(iterate < player.getPlayerTile() && amountOfDicesToShare > 0 && tileBoard[i][j].getDiceNumber()+range <=8){
                         tileBoard[i][j].setDiceNumber(tileBoard[i][j].getDiceNumber()+range);
                         amountOfDicesToShare-=range;
-                        System.out.println(amountOfDicesToShare + "= amount dice to share");
                     }
                     if(iterate==player.getPlayerTile() && amountOfDicesToShare > 0){
                         tileBoard[i][j].setDiceNumber(tileBoard[i][j].getDiceNumber()+amountOfDicesToShare);

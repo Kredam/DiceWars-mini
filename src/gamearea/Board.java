@@ -57,7 +57,6 @@ public class Board {
      * and colors the tiles based on the ownership of the tile
      */
     public void printBoard(){
-        Console.clearScreen();
         System.out.print("   |");
         for (int i = 0; i < col; i++) {
             System.out.print(Console.BLACK + Console.CYAN_BACKGROUND+i+". "+ Console.RESET +"|");

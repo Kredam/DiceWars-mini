@@ -226,6 +226,7 @@ public class Strategies {
      * @param y col coordinates check on
      * @param player which player's ownership to check
      */
+
     public void printPossibleMoves(int x, int y, Players player){
         if(upperNeighbour(x, y, player)){
             System.out.println("Press 1 to attack upper neighbour");
@@ -240,5 +241,34 @@ public class Strategies {
             System.out.println("Press 4 to attack right neighbour");
         }
         System.out.println("Press 5 to abort attack");
+    }
+
+    public boolean rightNeigbourNumberIsOne(int x, int y, Players player){
+        if(tileBoard[x][y+1].getDiceNumber()==1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean leftNeigbourNumberIsOne(int x, int y, Players player){
+        if(tileBoard[x][y-1].getDiceNumber()==1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean upperNeigbourNumberIsOne(int x, int y, Players player){
+        if(tileBoard[x-1][y].getDiceNumber()==1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean bottomNeigbourNumberIsOne(int x, int y, Players player){
+        if(tileBoard[x+1][y].getDiceNumber()==1){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
