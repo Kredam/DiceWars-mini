@@ -10,7 +10,7 @@ import players.Players;
 public class Board {
     Random random = new Random();
     private Tiles[][] board;
-    private int players;
+    private int numberOfPlayers;
     private int numberOfTiles;
     private int ownabletiles;
     private int row,col;
@@ -18,9 +18,9 @@ public class Board {
     int randomRow,randomCol;
     
     
-    public Board(int players){
-        this.players = players;
-        initializeBoard(players);
+    public Board(int numberOfPlayers){
+        this.numberOfPlayers = numberOfPlayers;
+        initializeBoard(numberOfPlayers);
         initializeEnemies();
         setUpPlayersOnBoard();
     }
@@ -32,10 +32,13 @@ public class Board {
         return col;
     }
     public int getPlayers(){
-        return players;
+        return numberOfPlayers;
     }
     public Tiles[][] getBoard() {
         return board;
+    }
+    public int getNumberOfTiles(){
+        return numberOfTiles;
     }
     
     /**
@@ -53,8 +56,8 @@ public class Board {
         return (int) Math.floor(Math.random()*this.row-0)+0;
     }
     /**
-     * This method prints the 2d Tiles array to the console<br/>
-     * and colors the tiles based on the ownership of the tile
+     * Kiírja a konzolra a 2 dimenziós tömböt, vagyis a pályát<br/>
+     * Kiszínezi a tömb elemeket a tulajdonosa alapján
      */
     public void printBoard(){
         System.out.print("   |");
@@ -83,51 +86,62 @@ public class Board {
             }
             System.out.println();
         }
-        System.out.println();
+        printBoardPlayersColor();
         System.out.println(Console.PURPLE_BACKGROUND + " " + Console.RESET + " = Rows");
-        System.out.println(Console.CYAN_BACKGROUND + " " + Console.RESET + " = Columns");
-        System.out.println(p1.getPlayerTile());
+        System.out.println(Console.CYAN_BACKGROUND + " " + Console.RESET + " = Columns\n");
+    }
+
+    private void printBoardPlayersColor(){
+        System.out.println(Console.RED+"Vour Tile's color"+Console.RESET);
+        System.out.println(Console.GREEN+"2nd enemy color"+Console.RESET);
+        if(p3 != null){
+            System.out.println(Console.BLUE+"3rd enemy color"+Console.RESET);
+        }
+        if(p4 != null){
+            System.out.println(Console.YELLOW+"4th enemy color"+Console.RESET);
+        }
     }
 
     /**
-     * initialize the board based on the user input<br/>
-     * and then creates new object from the Tiles class, and initialize it with the at attributes
-     * @param players the amount of players to initialize the board for
+     * Létrehozza a Tile 2 dimenziós tömböt attól föggően hogy hány játékos lesz a pályán, és<br/>
+     * meghatározza a játékos szám alapján hogy hány soros és oszlopos lesz a pálya és hogy hány elfoglalható terület lesz<br/>
+     * ,és kiszámolja hogy 1 játékos hány mezőt birtokolhat a játék elején
+     * @param numberOfPlayers Hány játékos játszik
      */
-    private void initializeBoard(int players){
-        if(players == 2){
+    private void initializeBoard(int numberOfPlayers){
+        if(numberOfPlayers == 2){
             numberOfTiles = 10;
             row = 4;
             col = 3;
         }
-        if(players == 3){
+        if(numberOfPlayers == 3){
             numberOfTiles = 27;
             row = 6;
             col = 6;
         }
-        if(players == 4){
+        if(numberOfPlayers == 4){
             numberOfTiles = 40;
             row = 7;
             col = 7;
         }
-        ownabletiles=numberOfTiles/players;
+        ownabletiles=numberOfTiles/numberOfPlayers;
         board = new Tiles[row][col];
     }
     /**
-     * Initialize the enemies/creates new objects from Players class based on the user input, which is the number of players
+     * Példányosítja a az enemy osztályt,létrehozza az ellenfél attól függően hogy hány játákos lesz a pályán
      */
     private void initializeEnemies(){
         p1 = new Player("p1", numberOfTiles);
-        if(players == 2){
+        if(numberOfPlayers == 2){
             p2 = new Enemy("p2", numberOfTiles);
             neutral = new Neutral("neutral");
         }
-        if(players == 3){
+        if(numberOfPlayers == 3){
             p2 = new Enemy("p2", numberOfTiles);
             p3 = new Enemy("p3", numberOfTiles);
             neutral = new Neutral("neutral");
         }
-        if(players == 4){
+        if(numberOfPlayers == 4){
             p2 = new Enemy("p2", numberOfTiles);
             p3 = new Enemy("p3", numberOfTiles);
             p4 = new Enemy("p4", numberOfTiles);
@@ -135,21 +149,21 @@ public class Board {
         }
     }
     /**
-     * Set up the board with players based on the user input, which is the number of players
+     * Meghívja valamelyik setUpPlayerOnBoard metódust attól függően hogy hány játékos lesz a pályán
      */
     private void setUpPlayersOnBoard(){
-        if(players == 2) {
+        if(numberOfPlayers == 2) {
             setUp2PlayersOnBoard();
         }
-        if(players == 3){
+        if(numberOfPlayers == 3){
             setUp3PlayersOnBoard();
         }
-        if(players == 4){
+        if(numberOfPlayers == 4){
             setUp4PlayersOnBoard();
         }
     }
     /**
-     * set up the board for 2 players
+     * Feltölti a táblát a játékosokkal és annak dobókockáival, és feltöti a kimaradt semleges mezőket 3 játkos számára
      */
     private void setUp2PlayersOnBoard(){
         while(true){
@@ -164,7 +178,7 @@ public class Board {
         generateDiceForPlayer(p2);
     }
     /**
-     * set up the board for 3 players
+     * Feltölti a táblát a játékosokkal és annak dobókockáival, és feltöti a kimaradt semleges mezőket 3 játkos számára
      */
     private void setUp3PlayersOnBoard(){
         while(true){
@@ -182,7 +196,7 @@ public class Board {
         
     }
     /**
-     * set up the board for 4 players
+     * Feltölti a táblát a játékosokkal és annak dobókockáival, és feltöti a kimaradt semleges mezőket 4 játkos számára
      */
     private void setUp4PlayersOnBoard(){
         while(true){
@@ -201,11 +215,11 @@ public class Board {
         generateDiceForPlayer(p4);
     }
     /**
-     * Fill the board with the player's tile
-     * @param player which player's tile 
-     * @param ownabletiles how many tiles you can fill the board with
-     * @param randomRow which row to put it on(random becasue of different board generation)
-     * @param randomCol which col to put it on(random becasue of different board generation)
+     * Feltölti a táblát a megadott játékos Tile-al, random poziciókon
+     * @param player Melyik játékos 
+     * @param ownabletiles Hány feltölthető hely van
+     * @param randomRow Random sor pozíció
+     * @param randomCol Random oszlop pozíció
      */
     private void fillBoardWithPlayersTiles(Players player, int ownabletiles, int randomRow, int randomCol){
         if(player.getPlayerTile() < ownabletiles && board[randomRow][randomCol] == null){
@@ -215,20 +229,20 @@ public class Board {
         }
     }
     /**
-     * fills null places on the board, with neutral tiles to avoid NullPointerException
+     * Feltölti a kimaradt Tile-okat semleges Tile-al, elkerüli a NullPointerException-t
      */
     private void fillNullPlaces(){
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if(board[i][j] == null){
-                    board[i][j] = new Tiles(i, j, neutral);
+                    board[i][j] = new NeutralTile(i, j, neutral);
                 }
             }
         }
     }
     /**
-     * Generates the dices for the players
-     * @param player which players dice to generate
+     * Legenerálja a játékosoknak a megfelelő mennyiségű dobókockákat
+     * @param player Melyik játékosnak generáljuk le dobókockákat
      */
     private void generateDiceForPlayer(Players player){
         player.setPlayerDices();
@@ -254,5 +268,4 @@ public class Board {
             }
         }
     }
-
 }

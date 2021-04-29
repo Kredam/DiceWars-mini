@@ -6,19 +6,18 @@ import gameplay.Console;
 
 public class playerInput{
     static Scanner sc = new Scanner(System.in);
-    
     /**
-     * Ask the player for input as longs as it is not valid, when choosing player number
-     * @return player number, if it's correct
+     * Lekezeli hogy a beírt játékos szám létezik-e
+     * @return játékos szám, ha az input helyes
      */
     public static int checkPlayerInput(){
-        int player;
+        int numberOfPlayers;
         do{
-            System.out.println("How many player between 2 and 4?");
+            System.out.println("How many players between 2 and 4?");
             try {
-                player = sc.nextInt();
-                if(player == 2 || player == 3 || player == 4){
-                    return player;
+                numberOfPlayers = sc.nextInt();
+                if(numberOfPlayers == 2 || numberOfPlayers == 3 || numberOfPlayers == 4){
+                    return numberOfPlayers;
                 }else{
                     System.out.println(Console.WHITE_BOLD+"Not a valid option, please try again!"+Console.RESET);
                 }
@@ -29,17 +28,17 @@ public class playerInput{
         }while(true);
     }
     /**
-     * Ask the player for input as longs as it is not valid, when choosing row
-     * @return row position if it's correct
+     * Lekezeli hogy a beírt sor pozíció intervallumon belül van-e
+     * @return sor változó, ha az input helyes
      */
-    public static int posX(int row){
-        int x;
+    public static int posX(int rowPosition){
+        int row;
         do{
             System.out.println("which row?");
            try{
-                x=sc.nextInt();
-                if(x>=0 && x<row){
-                    return x;
+                row=sc.nextInt();
+                if(row>=0 && row<rowPosition){
+                    return row;
                 }else{
                     System.out.println(Console.WHITE_BOLD+"Please enter x from the intervall!"+Console.RESET);
                 }
@@ -50,17 +49,17 @@ public class playerInput{
         }while(true);
     }
     /**
-     * Ask the player for input as longs as it is not valid, when choosing col
-     * @return col position if it's correct
+     * Lekezeli hogy a beírt oszlop pozíció intervallumon belül van-e
+     * @return oszlop változó, ha az input helyes
      */
     public static int posY(int col){
-        int y;
+        int column;
         do{
             System.out.println("which col?");
            try{
-                y=sc.nextInt();
-                if(y>=0 && y<col){
-                    return y;
+            column=sc.nextInt();
+                if(column>=0 && column<col){
+                    return column;
                 }else{
                     System.out.println(Console.WHITE_BOLD+"Please enter y from the intervall!"+Console.RESET);
                 }
@@ -71,8 +70,8 @@ public class playerInput{
         }while(true);
     }
     /**
-     * Ask the player for input as longs as it is not valid, when choosing end game option
-     * @return end game option if it's correct
+     * Lekezeli hogy a beírt játék végi opció létezik-e
+     * @return játék végi opció változó, ha az input helyes
      */
     public static int endGameOptions(){
         int endturnoptions;
@@ -91,6 +90,10 @@ public class playerInput{
             }
         }while(true);
     }
+    /**
+     * Lekezeli hogy a beírt kör végi opció létezik-e
+     * @return kör végi opció változó, ha az input helyes
+     */
     public static int endTurnOptions(){
         int endturnoptions;
         do{
@@ -108,7 +111,11 @@ public class playerInput{
             }
         }while(true);
     }
-    public static int chooseEnemyBehaviourOptions(){
+    /**
+     * Lekezeli hogya beí¶t ellenfél stratégia létezik-e
+     * @return ellenfél stratégiáját, ha az input helyes
+     */
+    public static int chooseEnemyStrategyOption(){
         int enemyOption;
         do{
             System.out.println("Options:");
