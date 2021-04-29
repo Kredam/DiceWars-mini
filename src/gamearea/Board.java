@@ -2,10 +2,7 @@ package gamearea;
 import java.util.*;
 
 import gameplay.*;
-import players.Enemy;
-import players.Neutral;
-import players.Player;
-import players.Players;
+import players.*;
 
 public class Board {
     Random random = new Random();
@@ -17,7 +14,10 @@ public class Board {
     public Players p1,p2,p3,p4, neutral;
     int randomRow,randomCol;
     
-    
+    /**
+     * Board osztály konstruktora
+     * @param numberOfPlayers Hány játékos lesz a pályán
+     */
     public Board(int numberOfPlayers){
         this.numberOfPlayers = numberOfPlayers;
         initializeBoard(numberOfPlayers);
@@ -25,32 +25,52 @@ public class Board {
         setUpPlayersOnBoard();
     }
    
+    /**
+     * Visszadja hogy hány sorból áll a tábla
+     * @return
+     */
     public int getRow() {
         return row;
     }
+    /**
+     * Visszaadja hogy hány oszlopból áll 
+     * @return
+     */
     public int getCol() {
         return col;
     }
-    public int getPlayers(){
+    /**
+     * Visszaadja hogy hány játkos van a pályán
+     * @return
+     */
+    public int getNumberOfPlayers(){
         return numberOfPlayers;
     }
+    /**
+     * Visszaadja a 2d Tile array-t vagyis magát a pályát
+     * @return Pályát(2d Tile array)
+     */
     public Tiles[][] getBoard() {
         return board;
     }
+    /**
+     * Visszadja az elfoglalható összes csempék számát
+     * @return
+     */
     public int getNumberOfTiles(){
         return numberOfTiles;
     }
     
     /**
-     * This method generates a random number based on the column 
-     * @return Random column position
+     * Legenerál egy oszlop számot az intervallumon belül
+     * @return Random oszlop pozíció
      */
     public int randomCol(){
         return (int) Math.floor(Math.random()*this.col-0)+0;
     }
     /**
-     * This method generates a random number based on the column 
-     * @return Random row position
+     * Legenrál egy sor számot az intervallumon belül 
+     * @return Random sor pozícó
      */
     public int randomRow(){
         return (int) Math.floor(Math.random()*this.row-0)+0;
@@ -91,6 +111,9 @@ public class Board {
         System.out.println(Console.CYAN_BACKGROUND + " " + Console.RESET + " = Columns\n");
     }
 
+    /**
+     * Kiírja a játkosok milyen szinű
+     */
     private void printBoardPlayersColor(){
         System.out.println(Console.RED+"Vour Tile's color"+Console.RESET);
         System.out.println(Console.GREEN+"2nd enemy color"+Console.RESET);
@@ -128,7 +151,7 @@ public class Board {
         board = new Tiles[row][col];
     }
     /**
-     * Példányosítja a az enemy osztályt,létrehozza az ellenfél attól függően hogy hány játákos lesz a pályán
+     * Példányosítja a az enemy osztályt,létrehozza az ellenfeleket attól függően hogy hány játákos lesz a pályán
      */
     private void initializeEnemies(){
         p1 = new Player("p1", numberOfTiles);
@@ -222,7 +245,7 @@ public class Board {
      * @param randomCol Random oszlop pozíció
      */
     private void fillBoardWithPlayersTiles(Players player, int ownabletiles, int randomRow, int randomCol){
-        if(player.getPlayerTile() < ownabletiles && board[randomRow][randomCol] == null){
+        if(board[randomRow][randomCol] == null && player.getPlayerTile() < ownabletiles){
             board[randomRow][randomCol] = new Tiles(randomRow, randomCol, player);
             board[randomRow][randomCol].setDiceNumber(1);
             player.increasePlayerTile();
@@ -251,7 +274,7 @@ public class Board {
         int iterate = 1;
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                if(board[i][j].getOwner().name == player.name){
+                if(board[i][j].getClass() != NeutralTile.class && board[i][j].getOwner().name == player.name){
                     if(dices > player.getPlayerDices()){
                         dices=player.getPlayerDices();
                     }

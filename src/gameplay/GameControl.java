@@ -6,22 +6,22 @@ import exceptions.playerInput;
 import gamearea.Board;
 import gamearea.Tiles;
 import players.Players;
-import players.Strategies.enemystrategies.EnemyStrategies;
-import players.Strategies.playerstrategy.MainCombat;
+import players.Combat.enemycombat.EnemyCombat;
+import players.Combat.playercombat.PlayerCombat;
 
 public class GameControl{
     Random rand = new Random();
     private Tiles[][] tileBoard;
-    private MainCombat playerStrategy;
-    private EnemyStrategies enemyStrategy;
+    private PlayerCombat playerStrategy;
+    private EnemyCombat enemyStrategy;
     private Board board;
     private int enemyStrategyOption;
 
     public GameControl(int players){
         board = new Board(players);
         tileBoard = board.getBoard();
-        playerStrategy = new MainCombat(board);
-        enemyStrategy = new EnemyStrategies(board);
+        playerStrategy = new PlayerCombat(board);
+        enemyStrategy = new EnemyCombat(board);
         chooseYourEnemyType(playerInput.chooseEnemyStrategyOption());
         start();
     }
@@ -100,14 +100,14 @@ public class GameControl{
      */
     public void enemyTurn(){
         System.out.println("START OF ENEMY TURN\n----------------------------------------");
-            if(board.getPlayers() == 2){
+            if(board.getNumberOfPlayers() == 2){
                 chooseEnemyStrategy(enemyStrategyOption, board.p2);
             }
-            if(board.getPlayers() == 3){
+            if(board.getNumberOfPlayers() == 3){
                 chooseEnemyStrategy(enemyStrategyOption, board.p2);
                 chooseEnemyStrategy(enemyStrategyOption, board.p3);
             }
-            if(board.getPlayers()== 4){
+            if(board.getNumberOfPlayers()== 4){
                 chooseEnemyStrategy(enemyStrategyOption, board.p2);
                 chooseEnemyStrategy(enemyStrategyOption, board.p3);
                 chooseEnemyStrategy(enemyStrategyOption, board.p4);

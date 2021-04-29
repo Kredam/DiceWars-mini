@@ -1,4 +1,4 @@
-package players.Strategies.playerstrategy;
+package players.Combat.playercombat;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -6,19 +6,25 @@ import java.util.Scanner;
 import exceptions.playerInput;
 import gamearea.*;
 import gameplay.Console;
-import players.Strategies.Strategies;
+import players.Combat.Combat;
 
-public class MainCombat extends Strategies{
+public class PlayerCombat extends Combat{
     private Scanner sc = new Scanner(System.in);
     private Tiles[][] tileBoard;
     private Board board;
 
-    public MainCombat(Board board) {
+    /**
+     * PlayerCombat konstruktor(Combat gyerekosztálya)
+     * @param board
+     */
+    public PlayerCombat(Board board) {
         super(board);
         this.board = getBoard();
         tileBoard=getTileBoard();
     }
-
+    /**
+     * Ez kezeli le a user támadását, itt haszánljuk a neigbour checkinges metódusokat
+     */
     public void playerCombat(){
         int OwnPosX = playerInput.posX(board.getRow());
         int OwnPosY = playerInput.posY(board.getRow());

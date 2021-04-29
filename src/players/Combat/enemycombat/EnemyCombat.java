@@ -1,21 +1,27 @@
-package players.Strategies.enemystrategies;
-
-import players.Strategies.Strategies;
+package players.Combat.enemycombat;
 
 import players.Players;
-
+import players.Combat.Combat;
 import gamearea.*;
 
-public class EnemyStrategies extends Strategies{
+public class EnemyCombat extends Combat{
     private Tiles[][] tileBoard;
     private Board board;
 
-    public EnemyStrategies(Board board) {
+    /**
+     * EnemyCombat konstruktor(Combat gyerekosztálya)
+     * @param board A tábla amin a stratégiákat alkamazza
+     */
+    public EnemyCombat(Board board) {
         super(board);
         this.board=getBoard();
         tileBoard=getTileBoard();
     }
 
+    /**
+     * Az ellenfél valamelyik random szomszédos ellenfél csempét támadja
+     * @param player Melyik ellenfélre alkalmazzuk
+     */
     public void randomTileAttack(Players player){
         int choice;
         for (int i = 0; i < board.getRow() ;i++) {
@@ -45,7 +51,12 @@ public class EnemyStrategies extends Strategies{
                         }
             }
         }
-    }    
+    } 
+       /**
+     * Az ellenfél figyelembe veszi a környező csempéket és hogy azon van-e 1 darab dobókocka
+     * , ha nincs ilyen akkor random támadja valamelyik csempét
+     * @param player Melyik ellenfélre alkalmazzuk
+     */   
     public void oneNumberedTileAttack(Players player){
         for (int x = 0; x < board.getRow() ;x++) {
             for (int y = 0; y < board.getCol(); y++) {
@@ -68,19 +79,19 @@ public class EnemyStrategies extends Strategies{
                                     attack(x, y, x, y+1);
                                     break;
                                 }
-                                if(upperNeighbour(x, y, player) && upperNeigbourNumberIsOne(x, y, player)){
+                                if(upperNeighbour(x, y, player) && upperNeigbourNumberIsOne(x, y)){
                                     attack(x, y, x-1, y);
                                     break;
                                 }
-                                if(bottomNeighbour(x, y, player) && bottomNeigbourNumberIsOne(x, y, player)){
+                                if(bottomNeighbour(x, y, player) && bottomNeigbourNumberIsOne(x, y)){
                                     attack(x, y, x+1, y);
                                     break;
                                 }
-                                if(leftNeighbour(x, y, player) && leftNeigbourNumberIsOne(x, y, player)){
+                                if(leftNeighbour(x, y, player) && leftNeigbourNumberIsOne(x, y)){
                                     attack(x, y, x, y-1);
                                     break;
                                 }
-                                if(rightNeighbour(x, y, player) && rightNeigbourNumberIsOne(x, y, player)){
+                                if(rightNeighbour(x, y, player) && rightNeigbourNumberIsOne(x, y)){
                                     attack(x, y, x, y+1);
                                     break;
                                 }
@@ -89,6 +100,11 @@ public class EnemyStrategies extends Strategies{
         }
     }    
 
+    /**
+     * Az ellenfél figyelembe veszi a környező csempéket és hogy azon kevesebb dobókocka van-e
+     * , ha nincs ilyen akkor random támadja valamelyik csempét
+     * @param player Melyik ellenfélre alkalmazzuk
+     */
     public void biggerNumberedTileAttack(Players player){
         for (int x = 0; x < board.getRow() ;x++) {
             for (int y = 0; y < board.getCol(); y++) {
