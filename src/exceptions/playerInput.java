@@ -2,7 +2,7 @@ package exceptions;
 
 import java.util.*;
 
-import gameplay.Console;
+import others.Console;
 
 public class playerInput{
     static Scanner sc = new Scanner(System.in);

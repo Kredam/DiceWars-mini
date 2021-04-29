@@ -1,4 +1,4 @@
-package players.Combat;
+package players.combat;
 import gamearea.*;
 
 import players.Players;

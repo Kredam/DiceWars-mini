@@ -7,19 +7,9 @@ public class Tiles{
     private int diceNumber;
     private boolean selectable;
     public int numberOfTiles = 0;
-    
-    /**
-     * Tile konstruktora(játszható mezőhöz használjuk)
-     * @param x csempre sor koordinátája
-     * @param y csempre sor koordinátája
-     * @param owner csempre tulajdonosa
-     * @param numberOfTiles hány mezővel rendelkezik a tulajdonosa
-     */
 
     /**
-     * Tile konstruktora(semleges mezőhöz haszáljuk)
-     * @param x csempre sor koordinátája
-     * @param y csempre sor koordinátája
+     * Tile konstruktora
      * @param owner csempre tulajdonosa
      */
     public Tiles(Players owner){

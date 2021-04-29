@@ -1,7 +1,7 @@
-package players.Combat.enemycombat;
+package players.combat.enemycombat;
 
 import players.Players;
-import players.Combat.Combat;
+import players.combat.Combat;
 import gamearea.*;
 
 public class EnemyCombat extends Combat{

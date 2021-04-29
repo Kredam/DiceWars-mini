@@ -1,12 +1,12 @@
-package players.Combat.playercombat;
+package players.combat.playercombat;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import exceptions.playerInput;
 import gamearea.*;
-import gameplay.Console;
-import players.Combat.Combat;
+import others.Console;
+import players.combat.Combat;
 
 public class PlayerCombat extends Combat{
     private Scanner sc = new Scanner(System.in);

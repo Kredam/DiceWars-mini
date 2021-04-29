@@ -5,9 +5,10 @@ import java.util.Random;
 import exceptions.playerInput;
 import gamearea.Board;
 import gamearea.Tiles;
+import others.Console;
 import players.Players;
-import players.Combat.enemycombat.EnemyCombat;
-import players.Combat.playercombat.PlayerCombat;
+import players.combat.enemycombat.EnemyCombat;
+import players.combat.playercombat.PlayerCombat;
 
 public class GameControl{
     Random rand = new Random();

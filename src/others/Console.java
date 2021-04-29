@@ -1,4 +1,4 @@
-package gameplay;
+package others;
 
 public class Console {
    // Reset

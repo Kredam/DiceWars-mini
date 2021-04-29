@@ -1,7 +1,6 @@
 package gamearea;
 import java.util.*;
-
-import gameplay.*;
+import others.Console;
 import players.*;
 
 public class Board {
@@ -24,7 +23,6 @@ public class Board {
         initializeEnemies();
         setUpPlayersOnBoard();
     }
-   
     /**
      * Visszadja hogy hány sorból áll a tábla
      * @return
@@ -41,26 +39,25 @@ public class Board {
     }
     /**
      * Visszaadja hogy hány játkos van a pályán
-     * @return
+     * @return játkos szám
      */
     public int getNumberOfPlayers(){
         return numberOfPlayers;
     }
     /**
      * Visszaadja a 2d Tile array-t vagyis magát a pályát
-     * @return Pályát(2d Tile array)
+     * @return Pálya(2d Tile array)
      */
     public Tiles[][] getBoard() {
         return board;
     }
     /**
      * Visszadja az elfoglalható összes csempék számát
-     * @return
+     * @return összes elfoglalható csempe
      */
     public int getNumberOfTiles(){
         return numberOfTiles;
     }
-    
     /**
      * Legenerál egy oszlop számot az intervallumon belül
      * @return Random oszlop pozíció
@@ -110,9 +107,8 @@ public class Board {
         System.out.println(Console.PURPLE_BACKGROUND + " " + Console.RESET + " = Rows");
         System.out.println(Console.CYAN_BACKGROUND + " " + Console.RESET + " = Columns\n");
     }
-
     /**
-     * Kiírja a játkosok milyen szinű
+     * Kiírja a játkosok milyen szinűek
      */
     private void printBoardPlayersColor(){
         System.out.println(Console.RED+"Vour Tile's color"+Console.RESET);
@@ -124,7 +120,6 @@ public class Board {
             System.out.println(Console.YELLOW+"4th enemy color"+Console.RESET);
         }
     }
-
     /**
      * Létrehozza a Tile 2 dimenziós tömböt attól föggően hogy hány játékos lesz a pályán, és<br/>
      * meghatározza a játékos szám alapján hogy hány soros és oszlopos lesz a pálya és hogy hány elfoglalható terület lesz<br/>
