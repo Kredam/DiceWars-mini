@@ -246,7 +246,7 @@ public class Board {
      */
     private void fillBoardWithPlayersTiles(Players player, int ownabletiles, int randomRow, int randomCol){
         if(board[randomRow][randomCol] == null && player.getPlayerTile() < ownabletiles){
-            board[randomRow][randomCol] = new Tiles(randomRow, randomCol, player);
+            board[randomRow][randomCol] = new Tiles(player);
             board[randomRow][randomCol].setDiceNumber(1);
             player.increasePlayerTile();
         }
@@ -258,7 +258,7 @@ public class Board {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if(board[i][j] == null){
-                    board[i][j] = new NeutralTile(i, j, neutral);
+                    board[i][j] = new NeutralTile(neutral);
                 }
             }
         }

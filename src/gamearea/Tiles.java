@@ -3,68 +3,65 @@ package gamearea;
 import players.Players;
 
 public class Tiles{
-    private int x;
-    private int y;
     private Players owner;
     private int diceNumber;
     private boolean selectable;
-    private int NumberOfSelectableTiles;
     public int numberOfTiles = 0;
     
-    public Tiles(int x, int y, Players owner, int numberOfTiles){
-        this.NumberOfSelectableTiles = 0;
-        this.x = x;
-        this.y = y;
-        this.owner = owner;
-        this.numberOfTiles = numberOfTiles;
-    }
+    /**
+     * Tile konstruktora(játszható mezőhöz használjuk)
+     * @param x csempre sor koordinátája
+     * @param y csempre sor koordinátája
+     * @param owner csempre tulajdonosa
+     * @param numberOfTiles hány mezővel rendelkezik a tulajdonosa
+     */
 
-    public Tiles(int x, int y, Players owner){
-        this.NumberOfSelectableTiles = 0;
-        this.x = x;
-        this.y = y;
+    /**
+     * Tile konstruktora(semleges mezőhöz haszáljuk)
+     * @param x csempre sor koordinátája
+     * @param y csempre sor koordinátája
+     * @param owner csempre tulajdonosa
+     */
+    public Tiles(Players owner){
         this.owner = owner;
-        numberOfTiles++;
     }
-
+    /**
+     * Visszaadja hogy kiválasztható-e a mező
+     * @return csempre kiválaszható igaz, ellenkező esetben hamis
+     */
     public boolean isSelectable(){
         return selectable;
     }
-
-    public int getX() {
-        return x;
-    }
-    public void setX(int x) {
-        this.x = x;
-    }
-    public int getY() {
-        return y;
-    }
-    public void setY(int y) {
-        this.y = y;
-    }
+    /**
+     * Visszaadja a csempe tulajdonosát
+     * @return csempre tulajdonos
+     */
     public Players getOwner() {
         return owner;
     }
-    
+    /**
+     * Beállítja a csempe tulajdonosát, a támadásnál használjuk, akkor ha elfoglal valaim egy meőt
+     * @param owner
+     */
     public void setOwner(Players owner) {
         this.owner = owner;
     }
+    /**
+     * Visszadja a csempének a kockaszámát
+     * @return kockaszám
+     */
     public int getDiceNumber() {
         return diceNumber;
     }
-    public int getNumberOfSelectableTiles(){
-        return NumberOfSelectableTiles;
-    }
     /**
-     * Set the dice number for this tile<br/>
-     * and set the selectable boolean varibale to true if diceNumber bigger than 1, else false
-     * @param diceNumber
+     * Beállítja hogy a csempe(Tile) hány dobókockával rendelkezik<br/>
+     * , hogy hozzá rendel a csempéhez a boolean értéket, ami checkolja hogy eggyes-e
+     * , mivel hogy akkor nem támadhatunk vele
+     * @param diceNumber Mennyiség amit a csempére állítsunk
      */
     public void setDiceNumber(int diceNumber) {
         if(diceNumber > 1){
             selectable = true;
-            NumberOfSelectableTiles++;
         } else {
             selectable = false;
         }

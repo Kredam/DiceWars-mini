@@ -17,7 +17,6 @@ public class EnemyCombat extends Combat{
         this.board=getBoard();
         tileBoard=getTileBoard();
     }
-
     /**
      * Az ellenfél valamelyik random szomszédos ellenfél csempét támadja
      * @param player Melyik ellenfélre alkalmazzuk
@@ -52,7 +51,7 @@ public class EnemyCombat extends Combat{
             }
         }
     } 
-       /**
+    /**
      * Az ellenfél figyelembe veszi a környező csempéket és hogy azon van-e 1 darab dobókocka
      * , ha nincs ilyen akkor random támadja valamelyik csempét
      * @param player Melyik ellenfélre alkalmazzuk
@@ -99,7 +98,6 @@ public class EnemyCombat extends Combat{
             }
         }
     }    
-
     /**
      * Az ellenfél figyelembe veszi a környező csempéket és hogy azon kevesebb dobókocka van-e
      * , ha nincs ilyen akkor random támadja valamelyik csempét

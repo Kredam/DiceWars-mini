@@ -7,10 +7,20 @@ public class Combat {
     private Tiles[][] tileBoard;
     private Board board;
 
+    /**
+     * Combat konstruktor
+     * , paraméterül kap egy Board objektumot
+     * @param board
+     */
     public Combat(Board board){
         this.board = board;
         tileBoard = board.getBoard();
     }
+    /**
+     * Visszadja boarddot
+     * , szükséges mivel csak így tudjuk lekérdezni madát a 2d Tile(csempe) tömbot, vagyis a pályát
+     * @return
+     */
     public Board getBoard() {
         return board;
     }
@@ -80,8 +90,6 @@ public class Combat {
         }
         return DiceValue;
     }
-
-
    /**
     * Ellenőrzi hogy van-e legalább egy szomszédja
      * @param x sor koordináta ahonnan ellenőrizze
