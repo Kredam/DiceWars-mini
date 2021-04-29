@@ -47,71 +47,89 @@ public class EnemyStrategies extends Strategies{
         }
     }    
     public void oneNumberedTileAttack(Players player){
-        for (int i = 0; i < board.getRow() ;i++) {
-            for (int j = 0; j < board.getCol(); j++) {
-                if(neighboursAround(i, j, tileBoard[i][j].getOwner()) && 
-                tileBoard[i][j].getOwner().name.equals(player.name) &&
-                        tileBoard[i][j].isSelectable()){
-                                attackOneNumberedTiles(i, j, tileBoard[i][j].getOwner());
-                                basicAttack(i, j, tileBoard[i][j].getOwner());
-                        }
+        for (int x = 0; x < board.getRow() ;x++) {
+            for (int y = 0; y < board.getCol(); y++) {
+                if(neighboursAround(x, y, tileBoard[x][y].getOwner()) && 
+                tileBoard[x][y].getOwner().name.equals(player.name) &&
+                tileBoard[x][y].isSelectable()){
+                                if(upperNeighbour(x, y, player)){
+                                    attack(x, y, x-1, y);
+                                    break;
+                                }
+                                if(bottomNeighbour(x, y, player)){
+                                    attack(x, y, x+1, y);
+                                    break;
+                                }
+                                if(leftNeighbour(x, y, player)){
+                                    attack(x, y, x, y-1);
+                                    break;
+                                }
+                                if(rightNeighbour(x, y, player)){
+                                    attack(x, y, x, y+1);
+                                    break;
+                                }
+                                if(upperNeighbour(x, y, player) && upperNeigbourNumberIsOne(x, y, player)){
+                                    attack(x, y, x-1, y);
+                                    break;
+                                }
+                                if(bottomNeighbour(x, y, player) && bottomNeigbourNumberIsOne(x, y, player)){
+                                    attack(x, y, x+1, y);
+                                    break;
+                                }
+                                if(leftNeighbour(x, y, player) && leftNeigbourNumberIsOne(x, y, player)){
+                                    attack(x, y, x, y-1);
+                                    break;
+                                }
+                                if(rightNeighbour(x, y, player) && rightNeigbourNumberIsOne(x, y, player)){
+                                    attack(x, y, x, y+1);
+                                    break;
+                                }
+                            }
             }
         }
     }    
-    private void attackOneNumberedTiles(int x, int y, Players player){
-        if(upperNeighbour(x, y, player) && upperNeigbourNumberIsOne(x, y, player)){
-            attack(x, y, x-1, y);
-        }
-        if(bottomNeighbour(x, y, player) && bottomNeigbourNumberIsOne(x, y, player)){
-            attack(x, y, x+1, y);
-        }
-        if(leftNeighbour(x, y, player) && leftNeigbourNumberIsOne(x, y, player)){
-            attack(x, y, x, y-1);
-        }
-        if(rightNeighbour(x, y, player) && rightNeigbourNumberIsOne(x, y, player)){
-            attack(x, y, x, y+1);
-        }
-    }
-    
+
     public void biggerNumberedTileAttack(Players player){
-        for (int i = 0; i < board.getRow() ;i++) {
-            for (int j = 0; j < board.getCol(); j++) {
-                if(neighboursAround(i, j, tileBoard[i][j].getOwner()) && 
-                tileBoard[i][j].getOwner().name.equals(player.name) &&
-                tileBoard[i][j].isSelectable()){
-                        attackSmallerNumberedTile(i, j, tileBoard[i][j].getOwner());
-                        //basicAttack(i, j, tileBoard[i][j].getOwner());
+        for (int x = 0; x < board.getRow() ;x++) {
+            for (int y = 0; y < board.getCol(); y++) {
+                if(neighboursAround(x, y, tileBoard[x][y].getOwner()) && 
+                tileBoard[x][y].getOwner().name.equals(player.name) &&
+                tileBoard[x][y].isSelectable()){
+                        if(upperNeighbour(x, y, player)){
+                            attack(x, y, x-1, y);
+                            break;
+                        }
+                        if(bottomNeighbour(x, y, player)){
+                            attack(x, y, x+1, y);
+                            break;
+                        }
+                        if(leftNeighbour(x, y, player)){
+                            attack(x, y, x, y-1);
+                            break;
+                        }
+                        if(rightNeighbour(x, y, player)){
+                            attack(x, y, x, y+1);
+                            break;
+                        }
+                        if(upperNeighbour(x, y, player) && tileBoard[x][y].getDiceNumber()>=tileBoard[x-1][y].getDiceNumber()){
+                            attack(x, y, x-1, y);
+                            break;
+                        }
+                        if(bottomNeighbour(x, y, player) && tileBoard[x][y].getDiceNumber()>=tileBoard[x+1][y].getDiceNumber()){
+                            attack(x, y, x+1, y);
+                            break;
+                        }
+                        if(leftNeighbour(x, y, player) && tileBoard[x][y].getDiceNumber()>=tileBoard[x][y-1].getDiceNumber()){
+                            attack(x, y, x, y-1);
+                            break;
+                        }
+                        if(rightNeighbour(x, y, player) && tileBoard[x][y].getDiceNumber()>=tileBoard[x][y+1].getDiceNumber()){
+                            attack(x, y, x, y+1);
+                            break;
+                        }
                 }
             }
         }
     }    
-    private void attackSmallerNumberedTile(int x, int y, Players player){
-        if(upperNeighbour(x, y, player) && tileBoard[x][y].getDiceNumber()>=tileBoard[x-1][y].getDiceNumber()){
-            attack(x, y, x-1, y);
-        }
-        if(bottomNeighbour(x, y, player) && tileBoard[x][y].getDiceNumber()>=tileBoard[x+1][y].getDiceNumber()){
-            attack(x, y, x+1, y);
-        }
-        if(leftNeighbour(x, y, player) && tileBoard[x][y].getDiceNumber()>=tileBoard[x][y-1].getDiceNumber()){
-            attack(x, y, x, y-1);
-        }
-        if(rightNeighbour(x, y, player) && tileBoard[x][y].getDiceNumber()>=tileBoard[x][y+1].getDiceNumber()){
-            attack(x, y, x, y+1);
-        }
-    }
-    
-    private void basicAttack(int x, int y, Players player){
-        if(upperNeighbour(x, y, player)){
-            attack(x, y, x-1, y);
-        }
-        if(bottomNeighbour(x, y, player)){
-            attack(x, y, x+1, y);
-        }
-        if(leftNeighbour(x, y, player)){
-            attack(x, y, x, y-1);
-        }
-        if(rightNeighbour(x, y, player)){
-            attack(x, y, x, y+1);
-        }
-    }
 }
+ 

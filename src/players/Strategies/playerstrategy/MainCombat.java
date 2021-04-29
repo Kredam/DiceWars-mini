@@ -20,7 +20,6 @@ public class MainCombat extends Strategies{
     }
 
     public void playerCombat(){
-        board.printBoard();
         int OwnPosX = playerInput.posX(board.getRow());
         int OwnPosY = playerInput.posY(board.getRow());
         if(tileBoard[OwnPosX][OwnPosY].isSelectable() && 
